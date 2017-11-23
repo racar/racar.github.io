@@ -1,0 +1,16 @@
+# careers section data
+# if you don't have language feature(language.yml is empty), ignore "i18n" items
+- name: Freelance
+  link:
+  date: May 2017 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
+  job: RoR Programming
+
+- name: Corficolombiana
+  link: http://www.corficolombiana.com/
+  date: Mar 2009 - Abr 2015
+  job: Software Analyst
+
+- name: SITIS/HDS/Geniar
+  link:
+  date: 2006 - 2008
+  job: Java Developer

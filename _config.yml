@@ -1,0 +1,67 @@
+#
+###################################
+# Site wide configuration
+####################################
+#
+title: racar
+email: rcarrascal@gmail.com
+description: Blog personal.
+url: https://racar.github.io/ # the base hostname & protocol for your site
+keywords: ["Programming","Java", "Ruby", "Developer","Programmer" ]
+
+#
+###################################
+# Jekyll configuration
+####################################
+#
+timezone:          Europe/Paris
+markdown:          kramdown
+highlighter:       rouge
+excerpt_separator: <!--more-->
+permalink:         /articles/:year-:month/:title
+
+kramdown:
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  enable_coderay: false
+
+#
+###################################
+# Site Owner configuration
+####################################
+#
+owner:
+  name: racar
+  avatar: #leonids-logo.png
+  job: "Full Stack Developer"
+  bio: ""
+  email: rcarrascal@gmail.com
+  disqus-shortname: racar
+  twitter: R4C4R #username
+  facebook: #username
+  google:
+    plus: #username
+    analytics: UA-62251910-2
+    verify:
+    ad-client:
+    ad-slot:
+  bing-verify:
+  github: racar #username
+  stackoverflow: 1527024/username   #from a "http://stackoverflow.com/users/1527024/username" link
+  linkedin: racar #username
+  xing: #username
+  instagram: #username
+  lastfm: #username
+  tumblr: #username
+  pinterest: #username
+  foursquare: #username
+  steam: #username
+  dribbble: #username
+  youtube: #username
+  soundcloud: #username
+  weibo: #username
+  flickr: #username
+  codepen: #username
+  telegram: #username

@@ -1,0 +1,6 @@
+# skills section data
+
+label: Abilidad
+id : cs
+aspects: Java, Ruby, C#, HTML/CSS, JS, Linux
+percentage: 70, 65, 65, 60, 50, 60
