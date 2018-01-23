@@ -33,9 +33,9 @@ kramdown:
 ####################################
 #
 owner:
-  name: racar
-  avatar: #leonids-logo.png
-  job: "Full Stack Developer"
+  name:
+  avatar: racar.png
+  job: ""
   bio: ""
   email: rcarrascal@gmail.com
   disqus-shortname: racar

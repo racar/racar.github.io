@@ -2,7 +2,7 @@
 # if you don't have language feature(language.yml is empty), ignore "i18n" items
 - name: Freelance
   link:
-  date: May 2017 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
+  date: May 2015 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
   job: RoR Programming
 
 - name: Corficolombiana
