@@ -3,11 +3,11 @@
 # Site wide configuration
 ####################################
 #
-title: racar
+title: Rafael Carrascal Reyes — Backend Engineer
 email: rcarrascal@gmail.com
-description: Blog personal.
+description: "Backend Engineer (Ruby on Rails / Python) — fintech, insurtech, AI-assisted development. Featured project RentaFIC.co"
 url: https://racar.github.io/ # the base hostname & protocol for your site
-keywords: ["Programming","Java", "Ruby", "Developer","Programmer" ]
+keywords: ["Backend Engineer","Ruby on Rails","Python","PySpark","PostgreSQL","AWS","AI Agents","Fintech","Insurtech","RentaFIC" ]
 
 #
 ###################################
@@ -33,10 +33,10 @@ kramdown:
 ####################################
 #
 owner:
-  name:
+  name: Rafael A. Carrascal Reyes
   avatar: racar.png
-  job: ""
-  bio: ""
+  job: "Backend Engineer • Ruby on Rails / Python"
+  bio: "8+ years fintech & insurtech. Featured: RentaFIC.co — real returns of 900+ FICs in Colombia."
   email: rcarrascal@gmail.com
   disqus-shortname: racar
   twitter: R4C4R #username

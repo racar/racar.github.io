@@ -1,4 +1,15 @@
-- name: Vaccine Cold Chain Inventory
-  descr: "App for cold chain equipment inventory tracking and governance management."
-  image: vaccine_inventory.png
-  github: https://github.com/racar/coldchain_inventory
+# projects section data — single featured project
+- name: RentaFIC — Real returns of Colombian FICs & FPVs
+  tagline: "Discover which FICs actually earn more"
+  descr: "Monthly rankings with real cumulative returns of 900+ FICs and 500+ FPVs in Colombia. Data pipeline from Colombia's open government API (datos.gov.co) + official SFC data, Streamlit frontend, Supabase auth, Mistral AI chatbot. Deployed with Docker on VPS, CI/CD via GitHub Actions + Watchtower."
+  image: rentafic-hero.png
+  website: https://rentafic.co
+  github: https://github.com/racar
+  highlights:
+    - "PySpark pipeline sourcing datos.gov.co + SFC official data"
+    - "Mintlify-inspired Streamlit UX — public ranking + detailed analysis with charts"
+    - "Supabase authentication & user management"
+    - "Mistral-powered AI chatbot for fund questions"
+    - "Docker on VPS, GitHub Actions + Watchtower for zero-downtime updates"
+    - "Spec-driven, AI-assisted workflow (Claude Code + OpenCode)"
+  stack: Python, PySpark, Streamlit, Supabase, Mistral, Docker, GitHub Actions

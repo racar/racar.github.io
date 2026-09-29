@@ -1,6 +1,6 @@
 # skills section data
 
-label: Abilidad
+label: Backend Engineer
 id : cs
-aspects: Java, Ruby, C#, HTML/CSS, JS, Linux
-percentage: 70, 65, 65, 60, 50, 60
+aspects: Ruby on Rails, Python / PySpark, PostgreSQL, AWS / Docker / CI-CD, RSpec / TDD, AI-assisted Dev
+percentage: 95, 85, 90, 85, 90, 88

@@ -1,16 +1,35 @@
 # careers section data
-# if you don't have language feature(language.yml is empty), ignore "i18n" items
-- name: Freelance
-  link:
-  date: May 2015 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
-  job: RoR Programming
+- name: RentaFIC — Personal project
+  link: https://rentafic.co
+  date: Apr 2026 - Present
+  job: Python Developer
 
-- name: Corficolombiana
+- name: Monokera — Insurtech
+  link:
+  date: 2023 - Apr 2026
+  job: Ruby Back-End Developer
+
+- name: Encora Inc. — Fintech (LendKey)
+  link: https://www.lendkey.com/
+  date: Jan 2021 - Jun 2023
+  job: Backend Engineer
+
+- name: CINTE Iberia
+  link:
+  date: Jan 2020 - Nov 2020
+  job: Ruby on Rails Contractor
+
+- name: Grupo Ditech — Yuse InsurTech
+  link:
+  date: Jan 2019 - Dec 2019
+  job: Backend Engineer
+
+- name: Freelancer.com → Various Startups
+  link:
+  date: Mar 2015 - Dec 2018
+  job: Full-Stack Developer (Freelance)
+
+- name: Corficolombiana (Grupo AVAL)
   link: http://www.corficolombiana.com/
-  date: Mar 2009 - Abr 2015
-  job: Software Analyst
-
-- name: SITIS/HDS/Geniar
-  link:
-  date: 2006 - 2008
-  job: Java Developer
+  date: Mar 2009 - Apr 2015
+  job: Software Project Analyst
