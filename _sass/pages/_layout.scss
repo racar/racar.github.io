@@ -90,12 +90,12 @@
 
 /* PORTFOLIO */
 .portfolio-hero {
-  background: linear-gradient(135deg, #0f2a44 0%, #1a4a7a 60%, #2e86de 100%);
+  background: linear-gradient(135deg, #0b3d2e 0%, #0e7a55 60%, #0fbf7f 100%);
   color: #fff;
   border-radius: 16px;
   padding: 2.5rem 2rem;
   margin: 0 0 2rem;
-  box-shadow: 0 12px 32px rgba(15, 42, 68, 0.25);
+  box-shadow: 0 12px 32px rgba(11, 61, 46, 0.28);
   .hero-kicker {
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -113,7 +113,7 @@
     font-size: 1.05rem;
     max-width: 44rem;
     opacity: 0.95;
-    a { color: #aee3ff; text-decoration: underline; }
+    a { color: #d6ffee; text-decoration: underline; }
   }
   .hero-cta {
     display: flex;
@@ -145,6 +145,8 @@
 .post-listing .cta-btn:hover { background: #eaf3ff; color: #0f2a44; }
 .post-listing .cta-primary { background: #0fbf7f; border-color: #0fbf7f; color: #fff; }
 .post-listing .cta-primary:hover { background: #0da670; color: #fff; }
+.portfolio-hero .cta-primary { background: #07332a; border-color: #07332a; color: #fff; }
+.portfolio-hero .cta-primary:hover { background: #052620; border-color: #052620; color: #fff; }
 
 .portfolio-summary p { margin: 0 0 0.8rem; }
 .portfolio-summary .muted { color: #5b6b7f; font-size: 0.95rem; }
