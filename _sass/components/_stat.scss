@@ -1,4 +1,25 @@
 
+// The case study header: dark banner with the product screenshot, and the
+// metric strip sitting directly on the page background below it.
+//
+// This deliberately does NOT reuse .hero or .hero__stats. That combination
+// renders the metrics at hero scale with no section heading, which reads as
+// three numbers that fell out of the image — the metric block looked like a
+// stray fragment rather than a labelled group.
+
+.case-media {
+  margin: 0 0 $space-6;
+  background: var(--surface-sunken);
+  border: 1px solid var(--line-hairline);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
 .stat-strip {
   display: flex;
   flex-wrap: wrap;
@@ -6,12 +27,16 @@
   margin: 0;
 }
 
-.stat-strip dt {
+.stat-strip__item {
+  min-width: 0;
+}
+
+.stat-strip__label {
   @include eyebrow;
   color: var(--text-3);
 }
 
-.stat-strip dd {
+.stat-strip__value {
   margin: $space-1 0 0;
   font-size: $fs-xl;
   font-weight: 700;
@@ -21,7 +46,34 @@
   color: var(--text-1);
 }
 
-// Credential grid — the 4 facts a recruiter checks, separated from prose.
+// Under the case-study header the strip is the lead content, not an aside, so
+// it gets more presence than the compact variant used in cards.
+.stat-strip--case {
+  padding-block-end: $space-6;
+  border-block-end: 1px solid var(--line-hairline);
+  margin-block-end: var(--space-7);
+
+  .stat-strip__value {
+    font-size: $fs-2xl;
+  }
+}
+
+// Three items in a narrow card stack rather than wrap into an orphan.
+@container (max-width: 24rem) {
+  .stat-strip {
+    flex-direction: column;
+    gap: $space-4;
+  }
+}
+
+@container (min-width: 40rem) {
+  .creds {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+// ─── CREDENTIAL GRID ───────────────────────────────────────────────────
+// The four facts a recruiter checks, separated from prose.
 .creds {
   display: grid;
   gap: $space-4;
@@ -33,7 +85,7 @@
 
 .creds__label {
   @include eyebrow;
-  font-size: $fs-2xs;
+  font-size: var(--fs-2xs);
 }
 
 .creds__value {
@@ -41,12 +93,6 @@
   font-size: $fs-sm;
   color: var(--text-1);
   font-weight: 600;
-}
-
-@container (min-width: 40rem) {
-  .creds {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 // ─── WRITING ───────────────────────────────────────────────────────────

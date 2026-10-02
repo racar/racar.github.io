@@ -49,6 +49,18 @@ if src.startswith("---"):
 Path(sys.argv[1]).write_text(src)
 PY
 
+echo "==> Checking partials for @use (unsupported by Ruby Sass)"
+
+# A stray @use in any partial is the exact failure that broke production twice:
+# it compiles fine under Dart Sass and errors under Ruby Sass 3.7.4.
+if grep -rqE "^@use " _sass/ 2>/dev/null; then
+  echo "PRODUCTION BUILD WOULD FAIL:"
+  grep -rn "^@use " _sass/ | sed 's/^/  /'
+  echo
+  echo "  Ruby Sass 3.7.4 does not support @use. Use @import only."
+  exit 1
+fi
+
 echo "==> Compiling with Ruby Sass $installed (production implementation)"
 if ! sass --style compressed -I _sass "$TMP/main.scss" "$TMP/rubysass.css" 2>"$TMP/err"; then
   echo

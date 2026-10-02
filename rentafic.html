@@ -28,7 +28,7 @@ description: "How RentaFIC calculates the real, inflation-adjusted returns of 90
     </div>
   </header>
 
-  <div class="hero" style="border-radius: var(--radius-xl); overflow: hidden">
+  <figure class="case-media">
     <img
       src="{{ '/img/' | append: project.image | relative_url }}"
       width="{{ project.image_width }}"
@@ -36,16 +36,16 @@ description: "How RentaFIC calculates the real, inflation-adjusted returns of 90
       alt="{{ project.image_alt | strip_newlines }}"
       style="width:100%;height:auto"
       decoding="async">
+  </figure>
 
-    <dl class="hero__stats" style="padding: var(--space-5) var(--space-6); border-block-start: 1px solid var(--hero-line)">
-      {% for metric in project.metrics %}
-        <div class="hero__stat">
-          <dt>{{ metric.label }}</dt>
-          <dd>{{ metric.value }}</dd>
-        </div>
-      {% endfor %}
-    </dl>
-  </div>
+  <dl class="stat-strip stat-strip--case">
+    {% for metric in project.metrics %}
+      <div class="stat-strip__item">
+        <dt class="stat-strip__label">{{ metric.label }}</dt>
+        <dd class="stat-strip__value">{{ metric.value }}</dd>
+      </div>
+    {% endfor %}
+  </dl>
 
   <div class="grid-2" style="margin-block-start: var(--space-7)">
     <div class="grid-2__inner--split">
@@ -137,12 +137,11 @@ description: "How RentaFIC calculates the real, inflation-adjusted returns of 90
       <aside class="stack-groups">
         <div class="card">
           <p class="stack-groups__group-label">At a glance</p>
-          <dl class="stack-list" style="font-size: var(--fs-sm)">
+          <dl class="stat-strip">
             {% for metric in project.metrics %}
-              <div class="stack-list__row" style="padding-block: var(--space-3)">
-                <div class="stack-list__head">
-                  <dt class="stack-list__label" style="font-size: var(--fs-sm)">{{ metric.label }}</dt>
-                </div>
+              <div class="stat-strip__item">
+                <dt class="stat-strip__label">{{ metric.label }}</dt>
+                <dd class="stat-strip__value">{{ metric.value }}</dd>
               </div>
             {% endfor %}
           </dl>
