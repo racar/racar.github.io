@@ -110,6 +110,11 @@ await new Promise((res, rej) => {
 
 const cdp = new CDP(ws);
 await cdp.send('Page.enable');
+// Disable the HTTP cache. Without this a screenshot can silently render a
+// previous deploy's CSS/HTML — which happened: a verification run showed the
+// old case-study markup while production had already been fixed.
+await cdp.send('Network.enable');
+await cdp.send('Network.setCacheDisabled', { cacheDisabled: true });
 
 const report = [];
 
