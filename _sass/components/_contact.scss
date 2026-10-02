@@ -27,7 +27,7 @@
   display: inline-block;
   margin-block-start: $space-5;
   font-family: $font-mono;
-  font-size: clamp(1.125rem, 0.9rem + 1.2vw, 1.75rem);
+  font-size: #{"clamp(1.125rem, 0.9rem + 1.2vw, 1.75rem)"};
   font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--hero-text);

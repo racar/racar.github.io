@@ -51,10 +51,12 @@ if declared < 60:
 if len(raw) < 8000:
     problems.append(f"stylesheet is only {len(raw)} bytes — suspiciously small")
 
-# 5. The light and dark schemes must both be present as separate rules.
-if ":root[data-theme=light]" not in css and ":root[data-theme='light']" not in css:
+# 5. The light and dark schemes must both be present as separate rules. The
+#    attribute selector may or may not be quoted depending on the Sass
+#    implementation, so match either.
+if not re.search(r":root\[data-theme=[\"']?light", css):
     problems.append("no light-scheme rule in the compiled CSS")
-if ":root[data-theme=dark]" not in css and ":root[data-theme='dark']" not in css:
+if not re.search(r":root\[data-theme=[\"']?dark", css):
     problems.append("no dark-scheme rule in the compiled CSS")
 
 # 6. Curly braces must balance. Unbalanced output means a partial compile.

@@ -1,217 +1,209 @@
-
-// PRIMITIVES MUST BE IMPORTED FIRST.
-// Under @use each file had its own isolated namespace and pulled in what it
-// needed. Under @import everything shares one global scope, so the order of
-// the imports in main.scss is load-bearing — primitives must precede this file.
-// Keeping the import here as well makes the dependency explicit if anyone ever
-// reorders main.scss; a duplicate @import of the same file is a no-op.
 @import "primitives";
 
-// ─── SEMANTIC TOKENS ───────────────────────────────────────────────────
-// DARK is the default. Light is an opt-in override.
+// ─── WHY THIS FILE LOOKS UNUSUAL ────────────────────────────────────────
+// Tokens are held in Sass maps and emitted through an interpolated key:
 //
-// Every pair here is verified by script/check-contrast.py, which reads this
-// compiled output, extracts each scheme from its OWN rule, and asserts it is
-// reading the right one before reporting. Do not hand-tune a value without
-// re-running it — that check caught a whole scheme being skipped once.
+//   $dark: ("--bg-0": #0f172a, ...);
+//   @mixin emit($map) { @each $k, $v in $map { #{$k}: $v; } }
 //
-// Selector arrangement:
-//   :root                      -> dark (the default, no attribute needed)
-//   :root[data-theme='light']  -> light, unconditionally
-//   :root[data-theme='dark']   -> dark, explicitly (redundant, but keeps the
-//                                 intent explicit and survives a future edit
-//                                 to the default block)
+// That is not stylistic. GitHub Pages' native build is a LOCKED environment
+// pinned to jekyll-sass-converter 1.5.2 / Ruby Sass 3.7.4, which predates CSS
+// custom properties and fails to parse them outright:
 //
-// There is deliberately NO prefers-color-scheme query. A reader whose OS is
-// light still gets dark, because the site default is dark — otherwise the
-// "default" would only apply to people whose OS already agrees with it. The
-// toggle is the only way to reach light.
+//   Error: Invalid CSS after "--bg-0: #fff": expected "{", was ";"
+//
+// Interpolating the key makes Ruby Sass emit the declaration verbatim, so the
+// output is real CSS custom properties and `var(--bg-0)` works normally at
+// runtime. The design system is unaffected — only the authoring syntax is.
+//
+// Two related Sass-map rules are load-bearing here:
+//   - a map value containing a comma must be quoted, or Sass reads the comma
+//     as the next map entry (this affects every rgba() tint and multi-layer
+//     shadow)
+//   - any value mixing units must be interpolated, or Sass tries to evaluate
+//     it and reports "Incompatible units: 'vw' and 'rem'" for clamp()
+//
+// If this site ever moves off the native build to a GitHub Actions workflow,
+// revert to `@use` and plain `--x: value` declarations. That is strictly
+// cleaner — this shape exists only because of the Pages constraint.
 
-// ─── DARK (default) ────────────────────────────────────────────────────
-// --hero-text* are NOT redeclared per scheme: the hero sits on a dark surface
-// in both, and white-on-navy is correct either way.
-@mixin hero-tokens {
-  // Declared once and identical in both schemes: the hero sits on a dark
-  // surface either way, so white-on-navy is correct in light and dark alike.
-  // Inside a mixin so the contrast checker finds them in every scheme block —
-  // previously these lived only on :root, which left the hero checks with no
-  // colour to measure in the light scheme.
-  --hero-text: #ffffff;
-  --hero-text-2: #cbd5e1; // slate-300, 12.02:1 on hero-base
-  --hero-text-3: #94a3b8; // slate-400, 6.96:1 on hero-base
+// Emit a token map as CSS custom property declarations.
+@mixin emit($map) {
+  @each $name, $value in $map {
+    #{$name}: $value;
+  }
 }
 
-@mixin dark-tokens {
-  @include hero-tokens;
+// DARK IS THE DEFAULT. Light is opt-in via the toggle.
+$dark: (
+  // surfaces
+  "--bg-0": #{$night-0},
+  "--bg-1": #{$night-1},
+  "--bg-2": #{$night-2},
+  "--bg-3": #{$night-3},
+  "--surface-card": #{$night-1},
+  "--surface-sunken": #{$night-3},
+  "--surface-brand": #17233f,
+  // lines
+  "--line-hairline": #1e293b,
+  "--line-strong": #{$slate-500},
+  "--line-brand": #{$blue-400},
+  // text
+  "--text-1": #{$night-text-1},
+  "--text-2": #{$night-text-2},
+  "--text-3": #{$night-text-3},
+  "--text-brand": #{$blue-400},
+  "--text-inverse": #{$night-0},
+  // brand roles
+  "--brand": #{$blue-400},
+  "--brand-hover": #{$blue-300},
+  "--brand-active": #{$blue-200},
+  "--brand-decorative": #{$blue-600},
+  "--brand-large-text": #{$blue-400},
+  // hero — navy base + composited glow, not a bright gradient. Contrast over a
+  // gradient is position-dependent and cannot be statically verified.
+  "--hero-base": #0b1220,
+  "--hero-glow": "rgba(59, 130, 246, 0.2)",
+  "--hero-text": #ffffff,
+  "--hero-text-2": #{$slate-300},
+  "--hero-text-3": #{$slate-400},
+  "--hero-line": "rgba(203, 213, 225, 0.14)",
+  // focus — TWO TONE, see _mixins.scss. A single-colour ring cannot work: the
+  // default ring scores ~1.5:1 against the hero mid-stop and --brand ~2:1
+  // against a filled button. Both host focusable elements.
+  "--focus-ring": #{$blue-400},
+  "--focus-halo": #{$night-0},
+  // status. Red and amber are reserved for functional meaning and never used
+  // as brand — a blue primary beside a red alert must not read as a variant.
+  "--ok": #{$blue-400},
+  "--warn": #f0b429,
+  "--danger": #ff8a94,
+  "--info": #{$blue-400},
+  "--selection-bg": #{$blue-400},
+  "--selection-fg": #{$night-0},
+  // shadows are nearly invisible on a dark surface, so the case card needs its
+  // 1px blue ring: the step from --bg-0 to --surface-card is only 1.05:1.
+  "--shadow-1": "0 1px 2px rgba(2, 6, 23, 0.4), 0 1px 3px rgba(2, 6, 23, 0.3)",
+  "--shadow-2": "0 2px 4px rgba(2, 6, 23, 0.4), 0 4px 12px rgba(2, 6, 23, 0.35)",
+  "--shadow-3": "0 8px 16px rgba(2, 6, 23, 0.45), 0 16px 40px rgba(2, 6, 23, 0.4)",
+  "--shadow-case": "0 24px 48px -12px rgba(2, 6, 23, 0.6), 0 0 0 1px rgba(59, 130, 246, 0.24)"
+);
 
-  color-scheme: dark;
+$light: (
+  // surfaces — neutral slate, not tinted. A neutral page is what lets the blue
+  // accent read as an accent instead of blending into the canvas.
+  // "#ffffff" written out rather than $slate-0 so the value survives as a
+  // six-digit hex: Ruby Sass compresses it to #fff, and the contrast checker
+  // reads six-digit hex only. Keeping it explicit also means the two Sass
+  // implementations emit byte-identical CSS.
+  "--bg-0": #ffffff,
+  "--bg-1": #{$slate-1},
+  "--bg-2": #{$slate-2},
+  "--bg-3": #{$slate-3},
+  "--surface-card": #ffffff,
+  "--surface-sunken": #{$slate-2},
+  "--surface-brand": #{$blue-050},
+  // lines. slate-500 not slate-400: #94a3b8 measures 2.56:1 on white and fails
+  // the 3:1 non-text threshold. #64748b clears it at 4.76:1.
+  "--line-hairline": #{$slate-3},
+  "--line-strong": #{$slate-500},
+  "--line-brand": #{$blue-700},
+  // text. Muted is slate-600 not slate-500: #64748b measures 4.34:1 on --bg-2
+  // and fails AA for body text. #475569 reaches 6.92:1.
+  "--text-1": #{$slate-900},
+  "--text-2": #{$slate-700},
+  "--text-3": #{$slate-600},
+  "--text-brand": #{$blue-700},
+  "--text-inverse": #ffffff,
+  "--brand": #{$blue-600},
+  "--brand-hover": #{$blue-700},
+  "--brand-active": #{$blue-800},
+  "--brand-decorative": #{$blue-400},
+  "--brand-large-text": #{$blue-500},
+  "--hero-base": #{$blue-950},
+  "--hero-glow": "rgba(59, 130, 246, 0.28)",
+  "--hero-text": #ffffff,
+  "--hero-text-2": #{$slate-300},
+  "--hero-text-3": #{$slate-400},
+  "--hero-line": "rgba(203, 213, 225, 0.16)",
+  "--focus-ring": #{$blue-950},
+  "--focus-halo": #ffffff,
+  "--ok": #{$blue-700},
+  "--warn": #8a4b00,
+  "--danger": #a01b2e,
+  "--info": #{$blue-700},
+  "--selection-bg": #{$blue-950},
+  "--selection-fg": #ffffff,
+  "--shadow-1": "0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04)",
+  "--shadow-2": "0 2px 4px rgba(15, 23, 42, 0.06), 0 4px 12px rgba(15, 23, 42, 0.07)",
+  "--shadow-3": "0 8px 16px rgba(15, 23, 42, 0.08), 0 16px 40px rgba(15, 23, 42, 0.1)",
+  "--shadow-case": "0 24px 48px -12px rgba(15, 23, 42, 0.4), 0 0 0 1px rgba(59, 130, 246, 0.24)"
+);
 
-  --bg-0: #{$night-0};
-  --bg-1: #{$night-1};
-  --bg-2: #{$night-2};
-  --bg-3: #{$night-3};
-  --surface-card: #{$night-1};
-  --surface-sunken: #{$night-3};
-  --surface-brand: #17233f;
-
-  --line-hairline: #1e293b;
-  --line-strong: #64748b;
-  --line-brand: #{$blue-400};
-
-  --text-1: #{$night-text-1};
-  --text-2: #{$night-text-2};
-  --text-3: #{$night-text-3};
-  --text-brand: #{$blue-400};
-  --text-inverse: #{$night-0};
-
-  --brand: #{$blue-400};
-  --brand-hover: #{$blue-300};
-  --brand-active: #{$blue-200};
-  --brand-decorative: #{$blue-600};
-  --brand-large-text: #{$blue-400};
-
-  --hero-base: #0b1220;
-  --hero-glow: rgba(59, 130, 246, 0.2);
-  --hero-line: rgba(203, 213, 225, 0.14);
-
-  --focus-ring: #{$blue-400};
-  --focus-halo: #{$night-0};
-
-  --ok: #{$blue-400};
-  --warn: #f0b429;
-  --danger: #ff8a94;
-  --info: #{$blue-400};
-
-  --selection-bg: #{$blue-400};
-  --selection-fg: #{$night-0};
-
-  // The dark case card needs its 1px blue ring: shadows are invisible on a
-  // dark surface and the step from --bg-0 to --surface-card is only 1.05:1.
-  --shadow-case: 0 24px 48px -12px rgba(2, 6, 23, 0.6),
-    0 0 0 1px rgba(59, 130, 246, 0.24);
-}
+// Scheme-agnostic: emitted once on :root and never overridden.
+$scale: (
+  // The full spacing scale is emitted, not just the two fluid ones. Any step
+  // referenced via var() must exist here or it silently resolves to nothing.
+  "--space-0": #{$space-0},
+  "--space-1": #{$space-1},
+  "--space-2": #{$space-2},
+  "--space-3": #{$space-3},
+  "--space-4": #{$space-4},
+  "--space-5": #{$space-5},
+  "--space-6": #{$space-6},
+  "--space-7": #{$space-7},
+  "--space-8": #{$space-8},
+  "--space-9": #{$space-9},
+  "--page-max": 76rem,
+  "--measure": 68ch,
+  "--topbar-h": 3.5rem,
+  // interpolated so Sass does not try to add rem to vw
+  "--space-section": #{"clamp(4rem, 3rem + 5vw, 7rem)"},
+  "--space-gutter": #{"clamp(1.25rem, 4vw, 3rem)"},
+  // type
+  "--fs-2xs": #{$fs-2xs},
+  "--fs-xs": #{$fs-xs},
+  "--fs-sm": #{$fs-sm},
+  "--fs-base": #{$fs-base},
+  "--fs-md": #{$fs-md},
+  "--fs-lg": #{$fs-lg},
+  "--fs-xl": #{$fs-xl},
+  "--fs-2xl": #{$fs-2xl},
+  "--fs-3xl": #{$fs-3xl},
+  "--fs-display": #{"clamp(2.25rem, 1.4rem + 4.2vw, 4rem)"},
+  "--lh-tight": #{$lh-tight},
+  "--lh-snug": #{$lh-snug},
+  "--lh-body": #{$lh-body},
+  "--lh-tight-body": #{$lh-tight-body},
+  // radii
+  "--radius-xs": #{$radius-xs},
+  "--radius-sm": #{$radius-sm},
+  "--radius-md": #{$radius-md},
+  "--radius-lg": #{$radius-lg},
+  "--radius-xl": #{$radius-xl},
+  "--radius-pill": #{$radius-pill},
+  // motion
+  "--dur-1": #{$dur-1},
+  "--dur-2": #{$dur-2},
+  "--dur-3": #{$dur-3},
+  "--ease": #{$ease}
+);
 
 :root {
-  @include dark-tokens;
-
-  // spacing — the full scale is emitted, not just the two fluid ones. Any
-  // step referenced via var() must exist here or it silently resolves to
-  // nothing, which is exactly the kind of bug a screenshot catches and a
-  // test suite does not.
-  --space-0: #{$space-0};
-  --space-1: #{$space-1};
-  --space-2: #{$space-2};
-  --space-3: #{$space-3};
-  --space-4: #{$space-4};
-  --space-5: #{$space-5};
-  --space-6: #{$space-6};
-  --space-7: #{$space-7};
-  --space-8: #{$space-8};
-  --space-9: #{$space-9};
-
-  // layout
-  --page-max: 76rem;
-  --measure: 68ch;
-  --topbar-h: 3.5rem;
-  --space-section: clamp(4rem, 3rem + 5vw, 7rem);
-  --space-gutter: clamp(1.25rem, 4vw, 3rem);
-
-  // type
-  --fs-2xs: #{$fs-2xs};
-  --fs-xs: #{$fs-xs};
-  --fs-sm: #{$fs-sm};
-  --fs-base: #{$fs-base};
-  --fs-md: #{$fs-md};
-  --fs-lg: #{$fs-lg};
-  --fs-xl: #{$fs-xl};
-  --fs-2xl: #{$fs-2xl};
-  --fs-3xl: #{$fs-3xl};
-  --fs-display: clamp(2.25rem, 1.4rem + 4.2vw, 4rem);
-  --lh-tight: #{$lh-tight};
-  --lh-snug: #{$lh-snug};
-  --lh-body: #{$lh-body};
-  --lh-tight-body: #{$lh-tight-body};
-
-  // radii
-  --radius-xs: #{$radius-xs};
-  --radius-sm: #{$radius-sm};
-  --radius-md: #{$radius-md};
-  --radius-lg: #{$radius-lg};
-  --radius-xl: #{$radius-xl};
-  --radius-pill: #{$radius-pill};
-
-  // shadows — blue-tinted, never neutral grey
-  --shadow-1: 0 1px 2px rgba(2, 6, 23, 0.4), 0 1px 3px rgba(2, 6, 23, 0.3);
-  --shadow-2: 0 2px 4px rgba(2, 6, 23, 0.4), 0 4px 12px rgba(2, 6, 23, 0.35);
-  --shadow-3: 0 8px 16px rgba(2, 6, 23, 0.45),
-    0 16px 40px rgba(2, 6, 23, 0.4);
-
-  // motion
-  --dur-1: #{$dur-1};
-  --dur-2: #{$dur-2};
-  --dur-3: #{$dur-3};
-  --ease: #{$ease};
-}
-
-// ─── LIGHT (opt-in via the toggle) ─────────────────────────────────────
-// slate + blue. Two stock Tailwind values are deliberately avoided:
-//   #94a3b8 border -> 2.56:1, fails the 3:1 non-text threshold (use #64748b)
-//   #64748b muted text -> 4.34:1 on --bg-2, fails AA for body (use #475569)
-@mixin light-tokens {
-  @include hero-tokens;
-
-  color-scheme: light;
-
-  --bg-0: #{$slate-0};
-  --bg-1: #{$slate-1};
-  --bg-2: #{$slate-2};
-  --bg-3: #{$slate-3};
-  --surface-card: #{$slate-0};
-  --surface-sunken: #{$slate-2};
-  --surface-brand: #{$blue-050};
-
-  --line-hairline: #{$slate-3};
-  --line-strong: #64748b;
-  --line-brand: #{$blue-700};
-
-  --text-1: #0f172a; // slate-900, 17.85:1 on white
-  --text-2: #334155; // slate-700, 10.35:1
-  --text-3: #475569; // slate-600, 7.58:1
-  --text-brand: #{$blue-700};
-  --text-inverse: #ffffff;
-
-  --brand: #{$blue-600};
-  --brand-hover: #{$blue-700};
-  --brand-active: #{$blue-800};
-  --brand-decorative: #{$blue-400};
-  --brand-large-text: #{$blue-500};
-
-  --hero-base: #{$blue-950};
-  --hero-glow: rgba(59, 130, 246, 0.28);
-  --hero-line: rgba(203, 213, 225, 0.16);
-
-  --focus-ring: #{$blue-950};
-  --focus-halo: #ffffff;
-
-  --ok: #{$blue-700};
-  --warn: #8a4b00;
-  --danger: #a01b2e;
-  --info: #{$blue-700};
-
-  --selection-bg: #{$blue-950};
-  --selection-fg: #ffffff;
-
-  --shadow-case: 0 24px 48px -12px rgba(15, 23, 42, 0.4),
-    0 0 0 1px rgba(59, 130, 246, 0.24);
+  color-scheme: dark;
+  @include emit($dark);
+  @include emit($scale);
 }
 
 // Explicit choice: light, regardless of the OS.
-:root[data-theme='light'] {
-  @include light-tokens;
+:root[data-theme="light"] {
+  color-scheme: light;
+  @include emit($light);
 }
 
 // Explicit choice: dark. Redundant against the :root default, kept so the
 // intent survives someone later flipping the default block.
-:root[data-theme='dark'] {
-  @include dark-tokens;
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  @include emit($dark);
 }

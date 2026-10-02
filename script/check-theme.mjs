@@ -89,10 +89,16 @@ async function expectedColors() {
   // Brace-matched extraction of one rule's declarations. Hardcoding the
   // expected values meant every palette change broke this suite with failures
   // that looked like theme regressions but were stale expectations.
-  const blockOf = (selector) => {
-    const at = css.indexOf(selector);
-    if (at === -1) throw new Error(`no rule for ${selector} in main.css`);
-    const open = css.indexOf('{', at);
+  // The attribute selector may or may not be quoted depending on the Sass
+  // implementation (Ruby Sass emits [data-theme="light"], Dart Sass may drop
+  // the quotes), so locate each rule with a regex rather than a literal.
+  const blockOf = (label) => {
+    const re = new RegExp(
+      label === 'default' ? ':root\\s*\\{' : `:root\\[data-theme=["']?${label}["']?\\]\\s*\\{`
+    );
+    const m = re.exec(css);
+    if (!m) throw new Error(`no rule for ${label} in main.css`);
+    const open = css.indexOf('{', m.index);
     let depth = 1;
     let j = open + 1;
     while (depth && j < css.length) {
@@ -102,17 +108,20 @@ async function expectedColors() {
     }
     return css.slice(open + 1, j - 1);
   };
+  // Match 3- or 6-digit hex: Ruby Sass compresses #ffffff to #fff, Dart Sass
+  // does not, so the two implementations legitimately differ here.
   const hexIn = (block, name) =>
-    (block.match(new RegExp(`${name}:\\s*(#[0-9a-f]{6})`, 'i')) || [])[1];
+    (block.match(new RegExp(`${name}:\\s*(#[0-9a-f]{3,6})`, 'i')) || [])[1];
   const toRgb = (h) => {
     if (!h) throw new Error('could not resolve a hex value');
-    const v = h.replace('#', '');
+    let v = h.replace('#', '');
+    if (v.length === 3) v = v.split('').map((c) => c + c).join('');
     return `rgb(${parseInt(v.slice(0, 2), 16)}, ${parseInt(v.slice(2, 4), 16)}, ${parseInt(v.slice(4, 6), 16)})`;
   };
   // The bare :root rule is the DEFAULT, which is now dark.
-  const def = blockOf(':root{');
-  const light = blockOf(":root[data-theme=light]{");
-  const dark = blockOf(":root[data-theme=dark]{");
+  const def = blockOf('default');
+  const light = blockOf('light');
+  const dark = blockOf('dark');
   return {
     lightBg: toRgb(hexIn(light, '--bg-0')),
     lightRaw: hexIn(light, '--bg-0'),

@@ -51,11 +51,21 @@ $blue-950: #0f172a;
 // Slate neutrals — cool, low chroma. Deliberately NOT pure grey: a blue-grey
 // carries the same family as the accent and reads as a system, where a pure
 // grey reads as unfinished next to a saturated blue.
+// Named `--slate-0` rather than `slate-0`: a bare `$slate-0` is legal but
+// `$slate-0: #ffffff` compresses to `#fff` under Ruby Sass, and the contrast
+// checker matches six-digit hex only. Full six-digit hex keeps local and
+// production output byte-identical.
 $slate-0: #ffffff;
 $slate-1: #f8fafc;
 $slate-2: #f1f5f9;
 $slate-3: #e2e8f0;
-$slate-4: #cbd5e1;
+$slate-300: #cbd5e1;
+$slate-400: #94a3b8;
+$slate-500: #64748b;
+$slate-600: #475569;
+$slate-700: #334155;
+$slate-900: #0f172a;
+$slate-4: #cbd5e1; // alias, kept for the surface ramp naming
 
 // Dark scheme neutrals.
 $night-0: #0f172a;
