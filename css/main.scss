@@ -3,34 +3,55 @@
 # converter instead of copying it verbatim as a static asset.
 ---
 
-// Entry point. @use throughout — no legacy @import, no vendor URL side effects.
+// Entry point.
 //
-// Load order matters: fonts and reset establish the base, tokens define the
-// custom properties every later file references, and tokens live in
-// abstracts/_semantic.scss which is pulled in by base/_reset.scss so the
-// dark-scheme block is never separated from the light block.
+// WHY @import AND NOT @use — this is a deployment constraint, not a preference.
+//
+// GitHub Pages' native build is a LOCKED environment pinned to
+// jekyll-sass-converter 1.x, which uses the legacy Ruby Sass library. That
+// implementation does not support the Sass module system. When this file used
+// @use, the deployed stylesheet was served as literal source:
+//
+//   $ curl https://racar.github.io/css/main.css
+//   @use 'abstracts/semantic';@use 'base/fonts';...
+//
+// Local builds looked perfect because the local Gemfile resolves Jekyll 4.4,
+// which pulls jekyll-sass-converter 3.x and Dart Sass. Only Pages was broken.
+//
+// @import is deprecated in Dart Sass and will be removed in Dart Sass 3.0, so
+// this is a deliberate trade: it works on the platform we deploy to, and it
+// keeps local and production byte-identical. Revisit only if this site moves
+// off the native build to a GitHub Actions workflow.
+//
+// Load order matters. Tokens define the custom properties every later file
+// references, so semantic must come before anything that uses var().
 
-@use 'abstracts/semantic';
+// abstracts/semantic imports abstracts/primitives itself, so primitives is
+// resolved before any file that references $space-*, $fs-*, $blue-*, etc.
+@import "abstracts/semantic";
 
-@use 'base/fonts';
-@use 'base/reset';
-@use 'base/typography';
+// Mixins must land before the first file that @include-s one. Under @use each
+// file pulled in its own dependencies; under @import that has to happen here.
+@import "abstracts/mixins";
 
-@use 'layout/grid';
-@use 'layout/topbar';
+@import "base/fonts";
+@import "base/reset";
+@import "base/typography";
 
-@use 'components/button';
-@use 'components/card';
-@use 'components/chip';
-@use 'components/contact';
-@use 'components/footer';
-@use 'components/hero';
-@use 'components/skill';
-@use 'components/stat';
-@use 'components/theme-toggle';
-@use 'components/timeline';
+@import "layout/grid";
+@import "layout/topbar";
 
-// Named _error rather than _404 — a Sass namespace cannot start with a digit.
-@use 'pages/error';
-@use 'pages/post';
-@use 'pages/syntax';
+@import "components/button";
+@import "components/card";
+@import "components/chip";
+@import "components/contact";
+@import "components/footer";
+@import "components/hero";
+@import "components/skill";
+@import "components/stat";
+@import "components/theme-toggle";
+@import "components/timeline";
+
+@import "pages/error";
+@import "pages/post";
+@import "pages/syntax";

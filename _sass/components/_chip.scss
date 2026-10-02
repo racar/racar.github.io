@@ -1,5 +1,3 @@
-@use '../abstracts/primitives' as *;
-@use '../abstracts/mixins' as *;
 
 // Replaces Font Awesome. ~12 symbols inlined once, currentColor throughout,
 // so icons inherit text colour and need no separate colour rules.

@@ -1,5 +1,3 @@
-@use 'sass:color';
-@use 'primitives' as *;
 
 // A single-colour focus ring cannot work on this palette. The default
 // --focus-ring (blue-950) scores only ~1.5:1 against the hero mid-stop, and

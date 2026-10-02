@@ -1,5 +1,3 @@
-@use '../abstracts/primitives' as *;
-@use '../abstracts/mixins' as *;
 
 // Type roles. Metadata never goes below --fs-xs (13px); the old theme used
 // 12px which is too small for a mobile reader.

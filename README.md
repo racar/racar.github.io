@@ -16,13 +16,13 @@ bundle install
 bundle exec jekyll serve      # http://localhost:4000
 ```
 
-`Gemfile` pins Jekyll so the local build matches what GitHub Pages produces.
-Without it the site compiles against whatever Jekyll happens to be installed,
-which is how this repo ended up with deprecated Sass division and legacy
-`@import` in the first place.
+`Gemfile` pins Jekyll so the local build is reproducible. **It does not, and
+cannot, make the local build identical to production** — GitHub Pages' native
+build is a locked environment with its own pinned gem set. That gap is why
+`script/check-css.py` exists; see the Sass note below.
 
 Build output lands in `_site/` (gitignored). Deploys happen on push to the
-default branch — there is no CI configuration and none is needed.
+default branch — no CI configuration, no workflow, nothing to maintain.
 
 ---
 
@@ -31,16 +31,42 @@ default branch — there is no CI configuration and none is needed.
 Three checks run against `_site/`. Build first, then:
 
 ```bash
+bundle install
 bundle exec jekyll build
 
+python3 script/check-css.py       # is the served CSS actually compiled CSS?
 python3 script/audit.py           # structure, a11y, links, zero-JS assertion
 python3 script/check-contrast.py  # every token pair vs WCAG AA thresholds
 python3 script/check-tokens.py    # var() references that were never defined
-node    script/check-theme.mjs    # light/dark precedence, persistence, no-flash
-node    script/shoot.mjs out/     # screenshots at real viewports + both schemes
+node    script/check-theme.mjs    # dark default, light opt-in, persistence, no-flash
+node    script/shoot.mjs out/     # screenshots at real viewports, both schemes
 ```
 
 Each exits non-zero on failure, so they work as a pre-commit gate.
+
+### The Sass dialect is a deployment constraint, not a preference
+
+GitHub Pages' native build is a **locked** environment pinned to
+`jekyll-sass-converter 1.x`, which uses legacy Ruby Sass. That implementation
+does **not** support the Sass module system. This site therefore uses
+`@import`, not `@use`.
+
+This is not a hypothetical. A deploy with `@use` shipped **live with an
+unstyled site**: `https://racar.github.io/css/main.css` returned literal
+`@use 'abstracts/semantic';@use 'base/reset';...`. Every local check passed
+and every screenshot looked correct, because the local `Gemfile` resolves
+Jekyll 4.4 → `jekyll-sass-converter` 3.x → Dart Sass. Only Pages was broken.
+
+`@import` is deprecated in Dart Sass and removed in Dart Sass 3.0, so this is a
+deliberate trade: it works on the platform we deploy to, and local and
+production output stay byte-identical. Revisit only if this site moves off the
+native build to a GitHub Actions workflow — then use `@use` and pin the
+converter.
+
+The consequence for the partials: under `@import` everything shares one global
+scope, so `main.scss` import order is load-bearing. `abstracts/primitives`
+must precede any file referencing `$space-*`, `$blue-*`, etc., and
+`abstracts/mixins` must precede the first `@include`.
 
 **`audit.py`** catches the regressions that are easy to reintroduce while
 editing templates: more than one `<h1>`, duplicate `id`s, a bare `<canvas>`,
@@ -48,6 +74,14 @@ icon-only links with no accessible name, images without `width`/`height`
 (layout shift), the production host hardcoded into `href`s, whitespace inside
 URL strings (the bug that made `/feed.xml` a dead link sitewide), internal
 404s, and any `.js` file appearing in the output.
+
+**`check-css.py`** asserts the built stylesheet is real compiled CSS rather
+than Sass source: no `@use`/`@import`/`@mixin` at-rules, tokens present, both
+schemes present, braces balanced. This is the check that would have caught the
+unstyled deploy — every other script parsed the broken file without complaint,
+because `@use 'abstracts/semantic';...` is still valid text to read. It has been
+verified by feeding it the exact 45-byte broken file the production server
+returned, and confirming it fails.
 
 **`check-contrast.py`** reads the compiled CSS and computes real contrast
 ratios for each token pair in **both** colour schemes, at the threshold that

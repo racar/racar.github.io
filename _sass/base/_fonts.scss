@@ -1,5 +1,3 @@
-@use '../abstracts/primitives' as *;
-@use '../abstracts/mixins' as *;
 
 // Self-hosted woff2. latin subset only. font-display: swap keeps text visible
 // during load. These files are preloaded in <head> so the swap is not visible

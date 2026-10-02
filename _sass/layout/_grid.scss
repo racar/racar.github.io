@@ -1,5 +1,3 @@
-@use '../abstracts/primitives' as *;
-@use '../abstracts/mixins' as *;
 
 // The internal 2-column sub-grids use CONTAINER queries, not viewport
 // queries. The case card sits inside a full-bleed section, so its ideal

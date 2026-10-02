@@ -1,4 +1,11 @@
-@use 'primitives' as *;
+
+// PRIMITIVES MUST BE IMPORTED FIRST.
+// Under @use each file had its own isolated namespace and pulled in what it
+// needed. Under @import everything shares one global scope, so the order of
+// the imports in main.scss is load-bearing — primitives must precede this file.
+// Keeping the import here as well makes the dependency explicit if anyone ever
+// reorders main.scss; a duplicate @import of the same file is a no-op.
+@import "primitives";
 
 // ─── SEMANTIC TOKENS ───────────────────────────────────────────────────
 // DARK is the default. Light is an opt-in override.
