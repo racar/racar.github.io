@@ -1,5 +1,9 @@
+# Rendered as a compact credential row inside the Contact section, NOT as its own
+# section heading — a single row does not earn an h2.
 
-- name: Universidad del Cauca — Electrical, Electronics & Communications Engineering
+- name: Universidad del Cauca
+  program: Electrical, Electronics & Communications Engineering
   link: http://www.unicauca.edu.co/
-  date:
-  desc: Engineer's Degree — Colombia
+  grad_year:
+  country: Colombia
+  desc: Engineer's Degree

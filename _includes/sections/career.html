@@ -1,27 +1,57 @@
-<h1><span>Experience</span></h1>
+<section class="section" id="experience">
+  <div class="page">
+    <div class="section__head">
+      <p class="eyebrow">Experience</p>
+      <h2 class="h-section">Fifteen years, six engagements, one industry</h2>
+    </div>
 
-<div class="archive">
-  <div class="timeline" id="timeline">
-    <div class="archive-title"><div class="archive-year"><strong>Apr 2026 – Present</strong> Python Developer @ <a href="https://rentafic.co">RentaFIC — Personal project</a></div>
-      <p class="timeline-desc">PySpark pipeline from datos.gov.co, Mintlify-inspired Streamlit UX, Supabase auth, Mistral chatbot, Docker/VPS + GitHub Actions + Watchtower.</p>
-    </div>
-    <div class="archive-title"><div class="archive-year"><strong>2023 – Apr 2026</strong> Ruby Back-End Developer @ Monokera — Insurtech</div>
-      <p class="timeline-desc">Rails services for thousands of policies (Peru/Colombia). S3-to-SFTP via Lambda/Python with zero data loss. PostgreSQL JSONB, Docker, CI/CD ownership. 5 products, 5,000+ users.</p>
-    </div>
-    <div class="archive-title"><div class="archive-year"><strong>Jan 2021 – Jun 2023</strong> Backend Engineer @ <a href="https://www.lendkey.com/">Encora Inc. (LendKey)</a></div>
-      <p class="timeline-desc">Loan origination modules in regulated fintech. RSpec high coverage, Agile/Scrum end-to-end, async collaboration US/India/Costa Rica.</p>
-    </div>
-    <div class="archive-title"><div class="archive-year"><strong>Jan 2020 – Nov 2020</strong> Ruby on Rails Contractor @ CINTE Iberia</div>
-      <p class="timeline-desc">Production Rails apps for European clients (Ruby, Java, JS, Shopify/Liquid). Full lifecycle ownership.</p>
-    </div>
-    <div class="archive-title"><div class="archive-year"><strong>Jan 2019 – Dec 2019</strong> Backend Engineer @ Grupo Ditech — Yuse InsurTech, Bogotá</div>
-      <p class="timeline-desc">Microservices + RabbitMQ, tech lead for backend, automated testing strategy, cross-border team (Colombia/Brazil).</p>
-    </div>
-    <div class="archive-title"><div class="archive-year"><strong>Mar 2015 – Dec 2018</strong> Full-Stack Developer (Freelance) @ Various Startups</div>
-      <p class="timeline-desc">MVPs with Rails, Angular, Ionic. Legacy modernization, test coverage, containerized deploys.</p>
-    </div>
-    <div class="archive-title"><div class="archive-year"><strong>Mar 2009 – Apr 2015</strong> Software Project Analyst @ <a href="http://www.corficolombiana.com/">Corficolombiana (Grupo AVAL)</a>, Cali</div>
-      <p class="timeline-desc">6 years back-office systems: transactional, batch, financial calculations, reporting. C#, ASP.NET, Java, COBOL/DB2 in regulated banking.</p>
-    </div>
+    <ol class="timeline">
+      {% for job in site.data.index.careers %}
+        <li class="timeline__item timeline__item--{{ job.tier }}">
+          <span class="timeline-node" aria-hidden="true"></span>
+
+<p class="timeline__dates">
+              <span>{{ job.start }} → {{ job.end }}</span>
+              <span class="timeline__duration">{{ job.duration }}</span>
+            </p>
+
+            <h3 class="timeline__role">{{ job.role }}</h3>
+            <p class="timeline__org-line">
+              {% if job.link %}<a class="timeline__org" href="{{ job.link }}" rel="noopener">{{ job.name }}</a>{% else %}<span class="timeline__org">{{ job.name }}</span>{% endif %}
+              <span class="timeline__context">{{ job.context }}</span>
+            </p>
+
+          {% if job.metric %}
+            <p class="timeline__metric"><span class="metric-chip">{{ job.metric }}</span></p>
+          {% endif %}
+
+          {% if job.summary %}
+            <p class="timeline__summary">{{ job.summary }}</p>
+          {% endif %}
+
+          {% if job.highlights %}
+            <ul class="timeline__highlights">
+              {% for highlight in job.highlights %}
+                <li>
+                  <svg class="icon icon--sm" aria-hidden="true"><use href="#i-check"></use></svg>
+                  <span>{{ highlight }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {% if job.stack %}
+            <div class="timeline__stack">
+              <div class="chip-row">
+                {% assign stack_items = job.stack | split: ", " %}
+                {% for item in stack_items %}
+                  <span class="chip">{{ item }}</span>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ol>
   </div>
-</div>
+</section>

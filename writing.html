@@ -1,0 +1,40 @@
+---
+layout: default
+permalink: /writing/
+title: Writing
+description: "Notes on backend engineering, fintech data, and AI-assisted development by Rafael Carrascal Reyes."
+---
+<div class="page section">
+  <div class="section__head">
+    <p class="eyebrow">Writing</p>
+    <h1 class="h-section">Notes on backends, fintech data, and building with AI agents</h1>
+  </div>
+
+  {% if site.posts.size > 0 %}
+    {% for post in site.posts %}
+      <article class="post-card">
+        <p class="post-meta">
+          <span class="post-date">{{ post.date | date: "%-d %b %Y" }}</span>
+          {% include read_time.html %}
+          {% if post.categories.size > 0 %}
+            · {% for cat in post.categories %}{{ cat }}{% unless forloop.last %}, {% endunless %}{% endfor %}
+          {% endif %}
+        </p>
+
+        <h2 class="post-card__title">
+          {% if post.link %}
+            <a href="{{ post.link }}" rel="noopener">{{ post.title }}</a>
+          {% else %}
+            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+          {% endif %}
+        </h2>
+
+        {% if post.excerpt %}
+          <p class="post-card__excerpt">{{ post.excerpt | strip_html | normalize_whitespace | truncate: 240 }}</p>
+        {% endif %}
+      </article>
+    {% endfor %}
+  {% else %}
+    <p class="empty-note">Nothing published yet.</p>
+  {% endif %}
+</div>

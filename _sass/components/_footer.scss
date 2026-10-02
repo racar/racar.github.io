@@ -1,0 +1,37 @@
+@use '../abstracts/primitives' as *;
+@use '../abstracts/mixins' as *;
+
+.site-footer {
+  border-block-start: 1px solid var(--line-hairline);
+  padding-block: $space-6;
+  font-size: $fs-xs;
+  color: var(--text-3);
+}
+
+.site-footer__inner {
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--space-gutter);
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-3 $space-5;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.site-footer a {
+  color: var(--text-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+.site-footer a:hover {
+  color: var(--brand-hover);
+}
+
+.site-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-4;
+}

@@ -1,0 +1,182 @@
+@use '../abstracts/primitives' as *;
+@use '../abstracts/mixins' as *;
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--topbar-h);
+  // Opaque, never translucent with backdrop-filter. A translucent bar means
+  // content scrolling underneath momentarily dips below 4.5:1.
+  background: var(--bg-0);
+  border-bottom: 1px solid var(--line-hairline);
+}
+
+.topbar__inner {
+  max-width: var(--page-max);
+  height: 100%;
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.topbar__brand {
+  font-weight: 650;
+  font-size: $fs-sm;
+  letter-spacing: -0.01em;
+  color: var(--text-1);
+  text-decoration: none;
+  white-space: nowrap;
+  // The brand absorbs all width pressure: it truncates with an ellipsis
+  // instead of pushing the nav or the Email button out of the viewport.
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topbar__nav {
+  // flex-shrink: 0 is load-bearing. The nav and the brand both shrink by
+  // default, so at 390px the nav got ~112px for links needing ~130px and
+  // clipped "Writing" mid-word. The brand has text-overflow: ellipsis and
+  // degrades gracefully; the nav does not, so it keeps its width and the
+  // brand absorbs the shortfall.
+  flex: 0 0 auto;
+}
+
+.topbar__brand:hover {
+  color: var(--brand-hover);
+}
+
+// Two brand variants rather than an ellipsis. "Rafael A. Carra…" truncated to
+// nothing useful at 320px; an explicit short form stays legible and the
+// accessible name remains the full name via the full/short swap.
+.topbar__brand-short {
+  display: none;
+}
+
+@media (max-width: 30rem) {
+  .topbar__brand-full {
+    display: none;
+  }
+
+  .topbar__brand-short {
+    display: inline;
+  }
+}
+
+// At 320px the three fixed elements (nav 157px + CTA 84px + gaps and padding
+// 64px) consume the entire row and the brand flexes down to zero width.
+// Dropping it entirely is better than a one-character fragment — the hero
+// h1 directly below states the full name.
+@media (max-width: 24rem) {
+  .topbar__brand {
+    display: none;
+  }
+}
+
+// 5 items at 14px fit a 360px screen without a hamburger. A hamburger would
+// need JS we deliberately do not ship, and would hide navigation behind a tap.
+.topbar__nav ul {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.topbar__nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: $target-min;
+  font-size: $fs-sm;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color var(--dur-1) var(--ease);
+}
+
+.topbar__nav a:hover {
+  color: var(--text-1);
+}
+
+.topbar__nav a[aria-current='page'] {
+  color: var(--text-1);
+  font-weight: 600;
+  box-shadow: inset 0 -2px 0 0 var(--brand);
+}
+
+.topbar__cta {
+  // Never hidden and never shrunk: contact must be reachable at any width.
+  flex-shrink: 0;
+  margin-inline-start: auto;
+}
+
+.skip-link {
+  position: absolute;
+  inset-inline-start: var(--space-4);
+  inset-block-start: var(--space-2);
+  z-index: 200;
+  padding: $space-2 $space-4;
+  background: var(--brand);
+  color: var(--text-inverse);
+  font-size: $fs-sm;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform var(--dur-2) var(--ease);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+.main {
+  display: block;
+}
+
+.section {
+  @include section;
+}
+
+.section__head {
+  margin-block-end: var(--space-7);
+}
+
+// Narrow viewports: optional nav links go first, then the remaining ones
+// beyond Contact. The Email button is never hidden — contact must not
+// require scrolling on a job-hunting site.
+@media (max-width: 44rem) {
+  .topbar__nav a[data-optional] {
+    display: none;
+  }
+}
+
+@media (max-width: 34rem) {
+  .topbar__nav a[data-optional-2] {
+    display: none;
+  }
+}
+
+// At 320px the four fixed-width pieces no longer fit: brand (hidden) + nav
+// 157 + toggle 44 + CTA 84 = 285px, plus 32px of gutters and gaps, which
+// pushed the row to 333px and produced horizontal scroll. Tighten the gutters
+// and gaps rather than dropping a link — the nav and the CTA are both load
+// bearing. The toggle stays at 44px because that is the touch target floor.
+@media (max-width: 26rem) {
+  .topbar__inner {
+    padding-inline: $space-3;
+    gap: $space-2;
+  }
+
+  .topbar__nav a {
+    font-size: $fs-xs;
+  }
+
+  .topbar__cta {
+    padding-inline: $space-3;
+  }
+}

@@ -1,48 +1,122 @@
-{% if page.title %}
-  {% capture title %}{{ page.title }} | {{ site.title }}{% endcapture %}
-{% else %}
+{% if page.url == '/' %}
   {% capture title %}{{ site.title }}{% endcapture %}
+  {% capture description %}{{ page.description | default: site.description }}{% endcapture %}
+{% else %}
+  {% capture title %}{{ page.title }} — {{ site.owner.name }}{% endcapture %}
+  {% capture description %}{{ page.description | default: site.description }}{% endcapture %}
 {% endif %}
 
-{% if page.excerpt %}
-  {% capture description %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% endcapture %}
+{% if page.image and page.image.feature %}
+  {% capture og_image %}{{ page.image.feature | absolute_url }}{% endcapture %}
 {% else %}
-  {% capture description %}{{ site.description }}{% endcapture %}
+  {% capture og_image %}{{ '/img/og-card.png' | absolute_url }}{% endcapture %}
 {% endif %}
 
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="{{ description }}">
-  <meta name="keywords" content="{{ site.keywords | array_to_sentence_string }}">
-  <meta name="author" content="{{ title }}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f5f5f5">
+  <meta name="description" content="{{ description | strip_html | normalize_whitespace | truncate: 200 }}">
 
-  <!-- Twitter Tags -->
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="{{ title }}">
-  <meta name="twitter:description" content="{{ description }}">
-  <meta name="twitter:image" content="{{ site.url }}/img/leonids-logo.png">
+  <!-- Fixes the old bug where this carried the page title, not the author. -->
+  <meta name="author" content="{{ site.owner.name }}">
+  <!-- "dark light": dark is the site default, and the ordering here is what
+       the UA uses to pick a default canvas before the stylesheet loads. -->
+  <meta name="color-scheme" content="dark light">
 
-  <!-- Open Graph Tags -->
-  <meta property="og:type" content="blog">
-  <meta property="og:url" content="{{ site.url }}">
-  <meta property="og:title" content="{{ title }}">
-  <meta property="og:description" content="{{ description }}">
-  <meta property="og:image" content="{{ site.url }}/img/leonids-logo.png">
   <title>{{ title }}</title>
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
 
-  <!-- CSS files -->
-  <link rel="stylesheet" href="{{ site.url }}/css/font-awesome.min.css">
-  <link rel="stylesheet" href="{{ site.url }}/css/main.css">
+  <!-- Matches the default scheme first; the media query covers readers who
+       explicitly switch to light. -->
+  <meta name="theme-color" content="#0f172a">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 
-  <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.url }}">
-  <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ " /feed.xml " | prepend: site.url }}" />
+  <!-- Theme preference applied BEFORE the stylesheet loads, or a visitor with a
+       stored dark choice sees a white flash on every page load. This is the
+       only inline script on the site and it is 12 lines. No framework, no
+       defer, no external request. With JS disabled the page simply follows
+       prefers-color-scheme, which is exactly the pre-toggle behaviour. -->
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('theme');
+        if (stored === 'light' || stored === 'dark') {
+          document.documentElement.setAttribute('data-theme', stored);
+        }
+      } catch (e) { /* private mode, blocked storage — fall through to OS */ }
+    })();
+  </script>
 
-  <!-- Icons -->
-  <!-- 16x16 -->
-  <link rel="shortcut icon" href="{{ site.url }}/favicon.ico">
-  <!-- 32x32 -->
-  <link rel="shortcut icon" href="{{ site.url }}/favicon.png">
+  <!-- Self-hosted fonts, preloaded before the stylesheet so the font swap is
+       not visible on a warm cache. Previously Google Fonts was @import-ed from
+       INSIDE the compiled stylesheet — a serial third-party request that could
+       not even be discovered until main.css finished downloading. -->
+  <link rel="preload" href="{{ '/fonts/inter-var-latin.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ '/fonts/jetbrains-mono-400-latin.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+
+  <!-- relative_url, not site.url concatenation. The old absolute paths made
+       the whole site hardcoded to the production host and broke local preview. -->
+  <link rel="stylesheet" href="{{ '/css/main.css' | relative_url }}">
+
+  <!-- summary, not summary_large_image — with `summary` no image renders at
+       all in most previews. The OG image was also the Leonids theme logo. -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ title | escape }}">
+  <meta name="twitter:description" content="{{ description | strip_html | normalize_whitespace | truncate: 200 | escape }}">
+  <meta name="twitter:image" content="{{ og_image }}">
+
+  <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <meta property="og:title" content="{{ title | escape }}">
+  <meta property="og:description" content="{{ description | strip_html | normalize_whitespace | truncate: 200 | escape }}">
+  <meta property="og:image" content="{{ og_image }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="{{ site.title }}">
+  <meta property="og:locale" content="en_US">
+  {% if page.layout == 'post' %}
+    <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
+    <meta property="article:author" content="{{ site.owner.name }}">
+  {% endif %}
+
+  <!-- Structured data. The site exists to be found by recruiters; Person and
+       ProfilePage were entirely absent. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": {{ site.owner.name | jsonify }},
+    "url": {{ site.url | append: '/' | jsonify }},
+    "image": {{ og_image | jsonify }},
+    "email": "mailto:{{ site.email }}",
+    "jobTitle": "Backend Systems Engineer",
+    "description": {{ site.description | jsonify }},
+    "knowsAbout": {{ site.keywords | jsonify }},
+    "sameAs": [
+      "https://linkedin.com/in/{{ site.owner.linkedin }}",
+      "https://github.com/{{ site.owner.github }}"
+    ],
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "Universidad del Cauca"
+    },
+    "hasOccupation": {
+      "@type": "Occupation",
+      "name": "Founder and Lead Engineer",
+      "occupationLocation": {
+        "@type": "Country",
+        "name": "Colombia"
+      },
+      "skills": "Ruby on Rails, Python, PySpark, PostgreSQL, AWS"
+    }
+  }
+  </script>
+
+  <!-- Spaces inside the Liquid string produced
+       https://racar.github.io/ /feed.xml — a dead link in every page head. -->
+  <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ '/feed.xml' | absolute_url }}">
+
+  <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="any">
+  <link rel="icon" type="image/png" href="{{ '/favicon.png' | relative_url }}">
+  <link rel="apple-touch-icon" href="{{ '/favicon.png' | relative_url }}">
 </head>

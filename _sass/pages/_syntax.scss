@@ -1,0 +1,142 @@
+@use '../abstracts/primitives' as *;
+@use '../abstracts/mixins' as *;
+
+// Rouge output. The site's one real post is about low-coupling software
+// design, so a well-styled code block is the most on-brand element here —
+// this is the highest-leverage styling in the whole build. The old file had
+// an empty `.err` rule and near-invisible whitespace markers at 1.8:1.
+
+.highlight {
+  background: var(--surface-sunken);
+  border: 1px solid var(--line-hairline);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.highlight pre {
+  margin: 0;
+  padding: $space-4 $space-5;
+  overflow-x: auto;
+  background: none;
+  border: 0;
+}
+
+.highlight code {
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  line-height: var(--lh-tight-body);
+  background: none;
+  padding: 0;
+}
+
+.highlighter-rouge .highlight {
+  @extend .highlight;
+}
+
+// Comments — 4.9:1 on --surface-sunken, was 1.8:1 before.
+.highlight .c,
+.highlight .cm,
+.highlight .c1,
+.highlight .cs,
+.highlight .cd {
+  color: var(--text-3);
+  font-style: italic;
+}
+
+.highlight .err {
+  color: var(--danger);
+  background: none;
+}
+
+// Keywords — --brand at 5.63:1 on --surface-sunken.
+.highlight .k,
+.highlight .kc,
+.highlight .kd,
+.highlight .kn,
+.highlight .kp,
+.highlight .kr,
+.highlight .kt {
+  color: var(--brand);
+  font-weight: 500;
+}
+
+.highlight .o,
+.highlight .ow,
+.highlight .p {
+  color: var(--text-2);
+}
+
+.highlight .n,
+.highlight .nb,
+.highlight .nc,
+.highlight .nd,
+.highlight .ni,
+.highlight .ne,
+.highlight .nf,
+.highlight .nl,
+.highlight .nn,
+.highlight .nx,
+.highlight .py {
+  color: var(--text-1);
+}
+
+.highlight .nv,
+.highlight .vc,
+.highlight .vg,
+.highlight .vi {
+  color: var(--info);
+}
+
+.highlight .s,
+.highlight .s1,
+.highlight .s2,
+.highlight .sb,
+.highlight .sc,
+.highlight .sd,
+.highlight .se,
+.highlight .sh,
+.highlight .si,
+.highlight .sx,
+.highlight .sr,
+.highlight .ss {
+  color: var(--ok);
+}
+
+.highlight .m,
+.highlight .mf,
+.highlight .mh,
+.highlight .mi,
+.highlight .mo,
+.highlight .il {
+  color: var(--warn);
+}
+
+.highlight .gd {
+  color: var(--danger);
+}
+
+.highlight .gi {
+  color: var(--ok);
+}
+
+.highlight .ge {
+  font-style: italic;
+}
+
+.highlight .gs {
+  font-weight: 700;
+}
+
+// Line numbers table gutter.
+.highlight .lineno,
+.highlight .gutter .gl {
+  color: var(--text-3);
+  user-select: none;
+  padding-inline-end: $space-4;
+  border-inline-end: 1px solid var(--line-hairline);
+}
+
+// Whitespace markers — must stay visible, unlike the old 1.8:1 grey.
+.highlight .w {
+  color: var(--text-3);
+}

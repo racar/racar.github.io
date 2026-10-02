@@ -1,0 +1,79 @@
+@use '../abstracts/primitives' as *;
+@use '../abstracts/mixins' as *;
+
+// Type roles. Metadata never goes below --fs-xs (13px); the old theme used
+// 12px which is too small for a mobile reader.
+
+body {
+  font-size: $fs-base;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-1);
+  font-weight: 700;
+}
+
+.display {
+  font-size: var(--fs-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: var(--lh-tight);
+}
+
+.h-section {
+  font-size: $fs-2xl;
+  letter-spacing: -0.02em;
+}
+
+.h-card {
+  font-size: $fs-xl;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.h-sub {
+  font-size: $fs-lg;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.eyebrow {
+  @include eyebrow;
+}
+
+.lede {
+  font-size: $fs-md;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.muted {
+  color: var(--text-3);
+}
+
+.meta {
+  @include meta;
+}
+
+.mono {
+  font-family: $font-mono;
+}
+
+// The 900+ FICs / 5,000+ users figures. tabular-nums so the stat strip does not
+// jitter, and a tight line-height so the numerals read as a unit.
+.figure {
+  font-size: $fs-2xl;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.figure--hero {
+  color: var(--hero-text);
+}

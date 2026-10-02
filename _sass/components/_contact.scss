@@ -1,0 +1,129 @@
+@use '../abstracts/primitives' as *;
+@use '../abstracts/mixins' as *;
+
+// Terminal contact block. Three placements guarantee the conversion path
+// exists at any scroll depth: topbar CTA, hero CTA, and this section.
+
+// The old theme obfuscated the email with document.write and string
+// splitting, which made it unreachable without JS, broke copy-address, and
+// announced unpredictably on screen readers. The address is plain text now.
+.contact {
+  @include on-dark;
+  background: var(--hero-base);
+  background-image: radial-gradient(
+    ellipse 70% 70% at 50% 0%,
+    var(--hero-glow) 0%,
+    transparent 62%
+  );
+  color: var(--hero-text);
+  text-align: center;
+}
+
+.contact__lede {
+  color: var(--hero-text-2);
+  max-width: 52ch;
+  margin-inline: auto;
+}
+
+.contact__email {
+  display: inline-block;
+  margin-block-start: $space-5;
+  font-family: $font-mono;
+  font-size: clamp(1.125rem, 0.9rem + 1.2vw, 1.75rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--hero-text);
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--brand-decorative);
+  // Wrapping mid-address is fine; breaking mid-local-part is not.
+  overflow-wrap: anywhere;
+}
+
+.contact__email:hover {
+  color: var(--hero-text-2);
+  text-decoration-color: var(--hero-text);
+}
+
+.contact__channels {
+  display: grid;
+  gap: $space-4;
+  margin-block-start: $space-7;
+  text-align: start;
+}
+
+.contact__channel {
+  @include on-dark;
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  min-height: $target-min;
+  padding: $space-4 $space-5;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--hero-line);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--hero-text);
+  transition: background-color var(--dur-1) var(--ease);
+}
+
+.contact__channel:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(199, 246, 224, 0.32);
+}
+
+.contact__channel-label {
+  font-size: $fs-sm;
+  font-weight: 600;
+}
+
+.contact__channel-handle {
+  display: block;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: var(--hero-text-3);
+  font-weight: 400;
+}
+
+.contact__replies {
+  margin-block-start: $space-6;
+  color: var(--hero-text-3);
+  font-size: $fs-sm;
+}
+
+.contact__creds {
+  margin-block-start: $space-7;
+  padding-block-start: $space-5;
+  border-block-start: 1px solid var(--hero-line);
+  display: grid;
+  gap: $space-4;
+  text-align: start;
+}
+
+.contact__cred-label {
+  @include eyebrow;
+  font-size: var(--fs-2xs);
+  color: var(--hero-text-3);
+}
+
+.contact__cred-value {
+  color: var(--hero-text-2);
+  font-size: $fs-sm;
+  margin-block-start: 2px;
+}
+
+.contact__cred-value a {
+  color: inherit;
+}
+
+@container (min-width: 40rem) {
+  .contact__channels {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .contact__creds {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-5;
+  }
+}

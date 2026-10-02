@@ -1,27 +1,36 @@
 ---
-# Only the main Sass file needs front matter (the dashes are enough)
+# Front matter is required for Jekyll to run this file through the Sass
+# converter instead of copying it verbatim as a static asset.
 ---
-@charset "UTF-8";
 
-// Mixins
-@import "components/mixins";
+// Entry point. @use throughout — no legacy @import, no vendor URL side effects.
+//
+// Load order matters: fonts and reset establish the base, tokens define the
+// custom properties every later file references, and tokens live in
+// abstracts/_semantic.scss which is pulled in by base/_reset.scss so the
+// dark-scheme block is never separated from the light block.
 
-// Variables
-@import "components/variables";
+@use 'abstracts/semantic';
 
-// Reset
-@import "components/normalize";
+@use 'base/fonts';
+@use 'base/reset';
+@use 'base/typography';
 
-// Components
-@import "components/global";
-@import "components/helpers";
-@import "components/grid";
-@import "components/typography";
-@import "components/buttons";
-@import "components/syntax-highlighting";
+@use 'layout/grid';
+@use 'layout/topbar';
 
-// Pages styling
-@import "pages/layout";
-@import "pages/tags";
-@import "pages/archive";
-@import "pages/post";
+@use 'components/button';
+@use 'components/card';
+@use 'components/chip';
+@use 'components/contact';
+@use 'components/footer';
+@use 'components/hero';
+@use 'components/skill';
+@use 'components/stat';
+@use 'components/theme-toggle';
+@use 'components/timeline';
+
+// Named _error rather than _404 — a Sass namespace cannot start with a digit.
+@use 'pages/error';
+@use 'pages/post';
+@use 'pages/syntax';

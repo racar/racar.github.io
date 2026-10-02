@@ -1,0 +1,135 @@
+@use 'sass:color';
+@use 'primitives' as *;
+
+// A single-colour focus ring cannot work on this palette. The default
+// --focus-ring (blue-950) scores only ~1.5:1 against the hero mid-stop, and
+// --brand (blue-600) only ~2:1 against a filled primary button. Both host
+// focusable elements. The two-tone outline + halo guarantees the ring reads on
+// any surface, in either colour scheme.
+@mixin focus-ring {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--focus-halo);
+}
+
+// Scope for dark or brand-filled surfaces. A white outer ring reads against
+// the hero mid-stop, where the dark default would fail.
+@mixin on-dark {
+  --focus-ring: #ffffff;
+  --focus-halo: #0f172a;
+}
+
+@mixin container($min) {
+  @container (min-width: $min) {
+    @content;
+  }
+}
+
+@mixin prose {
+  max-width: var(--measure);
+
+  > * + * {
+    margin-block-start: $space-4;
+  }
+
+  h2,
+  h3,
+  h4 {
+    line-height: var(--lh-snug);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  h2 {
+    font-size: $fs-2xl;
+    margin-block-start: $space-7;
+  }
+
+  h3 {
+    font-size: $fs-xl;
+  }
+
+  p,
+  li {
+    line-height: var(--lh-body);
+  }
+
+  a {
+    color: var(--text-brand);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+
+  a:hover {
+    color: var(--brand-hover);
+  }
+
+  code {
+    font-family: $font-mono;
+    font-size: 0.875em;
+    background: var(--surface-sunken);
+    padding: 0.15em 0.35em;
+    border-radius: var(--radius-xs);
+  }
+
+  pre {
+    background: var(--surface-sunken);
+    border: 1px solid var(--line-hairline);
+    border-radius: var(--radius-md);
+    padding: $space-4;
+    overflow-x: auto;
+    font-size: $fs-sm;
+    line-height: $lh-tight-body;
+  }
+
+  pre code {
+    background: none;
+    padding: 0;
+  }
+
+  blockquote {
+    border-inline-start: 3px solid var(--brand-decorative);
+    padding-inline-start: $space-4;
+    color: var(--text-2);
+  }
+
+  ul,
+  ol {
+    padding-inline-start: $space-5;
+  }
+}
+
+@mixin section {
+  padding-block: var(--space-section);
+}
+
+@mixin eyebrow {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-brand);
+}
+
+@mixin meta {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.01em;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+// Visually hidden but available to screen readers.
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

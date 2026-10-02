@@ -1,35 +1,133 @@
-# careers section data
-- name: RentaFIC — Personal project
+# Employment timeline. Looped by _includes/sections/career.html — edit here,
+# not in HTML.
+#
+# Fields:
+#   name      company (or project)
+#   link      optional external URL
+#   context   sector / division shown next to the company
+#   role      job title
+#   start/end YYYY-MM (or a free-form year range for multi-employer periods)
+#   duration  PRECOMPUTED string — Liquid cannot do date math, so this is
+#             maintained by hand
+#   tier      featured | standard | brief  (drives the visual treatment)
+#   metric    short verifiable stat, rendered as a chip
+#   summary   one or two sentences
+#   highlights bullet list, featured roles only
+#   stack     comma-separated, rendered as chips
+#
+# The consulting era 2015-2020 is ONE entry, not three. Three overlapping
+# short contracts read as a series of stints; one multi-client engagement with
+# named clients reads as deliberate independence. Matches the CV.
+#
+# Anchor: career starts 2009 at Corficolombiana. "15+ years in tech" on the CV
+# and site refers to that span; "11+" would refer to full-time development
+# from 2015.
+
+- name: RentaFIC
+  context: Own project — open data analytics
   link: https://rentafic.co
-  date: Apr 2026 - Present
-  job: Python Developer
+  role: Founder / Lead Engineer
+  start: 2026-04
+  end: Present
+  duration: ongoing
+  tier: featured
+  metric: 900+ FICs tracked monthly
+  summary: >-
+    Open-data analytics platform built from the ground up, sourcing Colombia's
+    public financial datasets and delivering actionable insight through
+    AI-augmented reporting.
+  highlights:
+    - PySpark pipeline ingesting and transforming datos.gov.co at scale
+    - Mistral chatbot for natural-language data exploration and report generation
+    - Supabase auth, role-based access control and multi-tenant user management
+    - Docker on VPS with GitHub Actions + Watchtower for zero-downtime updates
+    - Built with a spec-driven, AI-assisted workflow (Claude Code + OpenCode)
+  stack: Python, PySpark, Streamlit, Supabase, Mistral, Docker
 
-- name: Monokera — Insurtech
+- name: Monokera
+  context: Insurtech
   link:
-  date: 2023 - Apr 2026
-  job: Ruby Back-End Developer
+  role: Ruby Back-End Developer
+  start: 2023-06
+  end: 2026-04
+  duration: 2 yrs 10 mos
+  tier: featured
+  metric: 5,000+ users, 5 products
+  summary: >-
+    Core backend engineer on financial and insurance products serving thousands
+    of policies across LATAM markets (Peru, Colombia) for multiple enterprise
+    clients. Owned the CI/CD pipeline end to end.
+  highlights:
+    - Bidirectional S3→SFTP transfer on AWS Lambda + Python, thousands of policy files per week with zero data loss — retry logic and structured error handling
+    - PostgreSQL schemas with JSONB columns for flexible policy data, improving query performance by 40%
+    - Release cadence from bi-weekly to multiple times per week
+    - Full SDLC ownership in a Linux/Jira environment — planning, review, production monitoring
+  stack: Ruby on Rails, PostgreSQL, AWS Lambda, Docker
 
-- name: Encora Inc. — Fintech (LendKey)
+- name: Encora Inc. — LendKey
+  context: Fintech
   link: https://www.lendkey.com/
-  date: Jan 2021 - Jun 2023
-  job: Backend Engineer
+  role: Backend Engineer
+  start: 2021-01
+  end: 2023-06
+  duration: 2 yrs 5 mos
+  tier: featured
+  metric: Regulated lending platform
+  summary: >-
+    Origination modules for a US digital loan platform in a highly regulated
+    fintech environment. End-to-end delivery under Agile/Scrum.
+  highlights:
+    - Loan origination logic and repayment schedule engines
+    - Integrations with financial data providers in Ruby on Rails
+    - High RSpec coverage maintained over compliance-sensitive code paths
+    - Async collaboration across US, India and Costa Rica
+  stack: Ruby on Rails, RSpec, PostgreSQL
 
-- name: CINTE Iberia
+- name: Independent Engineering Consultant
+  context: Self-employed · Europe & LATAM
   link:
-  date: Jan 2020 - Nov 2020
-  job: Ruby on Rails Contractor
+  role: Engineering Consultant
+  start: 2015-03
+  end: 2020-11
+  duration: 5 yrs 8 mos
+  tier: standard
+  metric: Startups & enterprise clients
+  summary: >-
+    End-to-end engineering for startups and enterprise clients across Europe
+    and LATAM — fintech, insurtech and e-commerce. Clients included CINTE
+    Iberia (Rails and Shopify/Liquid for European enterprise) and early-stage
+    startups (MVPs in Rails, Angular and Ionic). Modernised legacy Rails
+    codebases and migrated teams to containerized deployments.
+  stack: Ruby on Rails, Angular, Ionic, Shopify/Liquid, Docker
 
 - name: Grupo Ditech — Yuse InsurTech
+  context: Insurtech · Youse.com.br (Brazil)
   link:
-  date: Jan 2019 - Dec 2019
-  job: Backend Engineer
+  role: Backend Engineer — Tech Lead
+  start: 2019-01
+  end: 2020-12
+  duration: 2 yrs
+  tier: standard
+  metric: Brazilian market launch
+  summary: >-
+    Technical lead for backend services on the Youse.com.br insurance platform.
+    Architected microservices with RabbitMQ and designed the automated testing
+    strategy that raised reliability ahead of a major product launch.
+  stack: Microservices, RabbitMQ
 
-- name: Freelancer.com → Various Startups
-  link:
-  date: Mar 2015 - Dec 2018
-  job: Full-Stack Developer (Freelance)
-
-- name: Corficolombiana (Grupo AVAL)
+- name: Corficolombiana
+  context: Grupo AVAL — regulated banking
   link: http://www.corficolombiana.com/
-  date: Mar 2009 - Apr 2015
-  job: Software Project Analyst
+  role: Enterprise Systems Engineer
+  start: 2009-03
+  end: 2015-04
+  duration: 6 yrs 1 mo
+  tier: standard
+  metric: 6 yrs regulated banking
+  summary: >-
+    Six years in the Systems Division of Colombia's second-largest banking
+    group. Designed and built internal applications optimising back-office
+    operations — transactional systems, batch processing, financial
+    calculations and reporting — working directly with functional leaders
+    across business units.
+  stack: C#, ASP.NET, Java, COBOL/DB2

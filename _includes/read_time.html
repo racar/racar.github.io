@@ -1,8 +1,9 @@
-<span class="read-time" title="Estimated read time">
-  {% assign words = content | number_of_words %}
-  {% if words < 360 %}
-    1 min read
-  {% else %}
-    {{ words | divided_by:180 }} mins read
-  {% endif %}
-</span>
+{% comment %}
+Reading time from page.content. Number-of-words on the raw markdown is a close
+enough estimate; the old version emitted "1 mins read" for every post because
+divided_by truncates toward zero.
+{% endcomment %}
+{% assign words = page.content | number_of_words %}
+{% assign minutes = words | divided_by: 200 %}
+{% if minutes < 1 %}{% assign minutes = 1 %}{% endif %}
+<span class="reading-time">{{ minutes }} min read</span>

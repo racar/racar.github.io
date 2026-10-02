@@ -1,0 +1,45 @@
+@use '../abstracts/primitives' as *;
+@use '../abstracts/mixins' as *;
+
+// The internal 2-column sub-grids use CONTAINER queries, not viewport
+// queries. The case card sits inside a full-bleed section, so its ideal
+// breakpoint is a function of its own width, not the viewport's.
+
+.page {
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--space-gutter);
+}
+
+.prose {
+  @include prose;
+}
+
+.grid-2 {
+  container-type: inline-size;
+}
+
+@container (min-width: 68rem) {
+  .grid-2__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-7);
+    align-items: start;
+  }
+}
+
+.full-bleed {
+  // Section-level surface shift so the case study reads as a distinct panel.
+  background: var(--bg-1);
+}
+
+// container-type: inline-size establishes a containing block, so nothing
+// position:fixed may live inside one of these.
+@container (min-width: 46rem) {
+  .grid-2__inner--split {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: var(--space-7);
+    align-items: start;
+  }
+}

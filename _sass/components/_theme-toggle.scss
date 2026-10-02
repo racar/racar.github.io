@@ -1,0 +1,60 @@
+@use '../abstracts/primitives' as *;
+
+/* Theme toggle.
+ *
+ * Progressive enhancement. The button ships with the `hidden` attribute and is
+ * revealed by script in the topbar partial, so a visitor with JavaScript
+ * disabled never sees a control that cannot work. The page itself still
+ * follows prefers-color-scheme, which is the pre-toggle behaviour.
+ *
+ * 44px square to meet the touch target minimum.
+ */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: $target-min;
+  height: $target-min;
+  flex-shrink: 0;
+  padding: 0;
+  border: 1px solid var(--line-hairline);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: color var(--dur-1) var(--ease),
+    border-color var(--dur-1) var(--ease),
+    background-color var(--dur-1) var(--ease);
+}
+
+.theme-toggle:hover {
+  color: var(--text-1);
+  border-color: var(--line-strong);
+}
+
+.theme-toggle .icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Show the icon for the theme you would SWITCH TO, so the control reads as
+ * "go here next". Sun shows in light mode (click for dark), moon in dark.
+ *
+ * Dark is the site default, so moon is the base state — it applies with no
+ * data-theme attribute at all. There is no prefers-color-scheme query here
+ * either, because the OS does not influence the theme. */
+.theme-toggle__sun {
+  display: none;
+}
+
+.theme-toggle__moon {
+  display: block;
+}
+
+:root[data-theme='light'] .theme-toggle__sun {
+  display: block;
+}
+
+:root[data-theme='light'] .theme-toggle__moon {
+  display: none;
+}

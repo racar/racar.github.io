@@ -1,0 +1,184 @@
+@use '../abstracts/primitives' as *;
+@use '../abstracts/mixins' as *;
+
+// Modern reset. Replaces normalize.css (2016-era, and it fought the modern
+// box model). Opinionated defaults, no unused framework residue.
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  font-size: 100%; // never an absolute px — preserves user font preference
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  // Anchor jumps must clear the sticky topbar or headings hide under it.
+  scroll-padding-top: calc(var(--topbar-h) + #{$space-5});
+}
+
+// Never gate smooth scroll unconditionally — it violates 2.3.3 for users with
+// vestibular sensitivity.
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  min-height: 100svh;
+  font-family: $font-sans;
+  font-size: $fs-base;
+  line-height: var(--lh-body);
+  color: var(--text-1);
+  background: var(--bg-0);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+img,
+video {
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: var(--lh-snug);
+  text-wrap: balance;
+}
+
+ul[class],
+ol[class] {
+  list-style: none;
+  padding: 0;
+}
+
+:target {
+  scroll-margin-top: calc(var(--topbar-h) + #{$space-5});
+}
+
+::selection {
+  background: var(--selection-bg);
+  color: var(--selection-fg);
+}
+
+@each $bp in (focus-visible, hover) {
+  :focus-#{$bp} {
+    @include focus-ring;
+  }
+}
+
+// Suppress the ring for mouse users but never remove it for keyboard users.
+:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
+@media (forced-colors: active) {
+  // Windows High Contrast overrides background-color, which would otherwise
+  // erase the hero entirely and the timeline rail.
+  .hero,
+  .contact,
+  .case-card {
+    background: Canvas;
+    color: CanvasText;
+    forced-color-adjust: none;
+  }
+
+  .case-card,
+  .timeline::before,
+  .meter__track {
+    forced-color-adjust: none;
+    border: 1px solid CanvasText;
+  }
+
+  .timeline-node,
+  .badge__dot,
+  .meter__fill {
+    forced-color-adjust: none;
+    background: Highlight;
+  }
+
+  :focus-visible {
+    outline: 2px solid Highlight;
+  }
+}
+
+@media print {
+  // Recruiters print and save-to-PDF this site. Give them something sane.
+  .topbar,
+  .skip-link,
+  .hero__glow,
+  .btn,
+  .contact {
+    display: none !important;
+  }
+
+  body {
+    font-size: 10.5pt;
+    color: #000;
+    background: #fff;
+  }
+
+  .hero,
+  .case-card,
+  .section {
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #999;
+    box-shadow: none;
+  }
+
+  .case-card,
+  .timeline-item--featured,
+  .section {
+    break-inside: avoid;
+  }
+
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 9pt;
+    color: #555;
+  }
+}

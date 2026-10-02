@@ -1,0 +1,97 @@
+<section class="section full-bleed" id="stack">
+  <div class="page">
+    <div class="section__head">
+      <p class="eyebrow">Stack</p>
+      <h2 class="h-section">What I reach for, and where I have actually used it</h2>
+      <p class="lede" style="margin-block-start: var(--space-4); max-width: 60ch">
+        No self-assessed percentages. Each entry below is a tier, an
+        approximate number of years in production, and a specific thing I
+        built.
+      </p>    </div>
+
+    <div class="grid-2">
+      <div class="grid-2__inner">
+        <div>
+          <dl class="stack-list">
+            {% for skill in site.data.index.stack %}
+              <div class="stack-list__row">
+                <div>
+                  <div class="stack-list__head">
+                    <dt class="stack-list__label">{{ skill.label }}</dt>
+                    <span class="tier-chip">{{ skill.tier }}</span>
+                    <dd class="stack-list__years">{{ skill.years }} yrs</dd>
+                  </div>
+                </div>
+                <dd class="stack-list__proof">{{ skill.proof }}</dd>
+              </div>
+            {% endfor %}
+          </dl>
+        </div>
+
+        <div class="stack-groups">
+          <div>
+            <p class="stack-groups__group-label">Languages</p>
+            <div class="chip-row">
+              <span class="chip">Ruby</span>
+              <span class="chip">Python</span>
+              <span class="chip">Java</span>
+              <span class="chip">JavaScript</span>
+              <span class="chip">SQL</span>
+              <span class="chip">Bash</span>
+            </div>
+          </div>
+
+          <div>
+            <p class="stack-groups__group-label">Frameworks</p>
+            <div class="chip-row">
+              <span class="chip">Rails</span>
+              <span class="chip">PySpark</span>
+              <span class="chip">RSpec</span>
+              <span class="chip">Streamlit</span>
+              <span class="chip">Angular</span>
+              <span class="chip">Ionic</span>
+              <span class="chip">Liquid</span>
+            </div>
+          </div>
+
+          <div>
+            <p class="stack-groups__group-label">Data</p>
+            <div class="chip-row">
+              <span class="chip">PostgreSQL</span>
+              <span class="chip">JSONB</span>
+              <span class="chip">Supabase</span>
+              <span class="chip">datos.gov.co</span>
+              <span class="chip">SFC filings</span>
+            </div>
+          </div>
+
+          <div>
+            <p class="stack-groups__group-label">Infrastructure</p>
+            <div class="chip-row">
+              <span class="chip">AWS Lambda</span>
+              <span class="chip">S3</span>
+              <span class="chip">SFTP</span>
+              <span class="chip">Docker</span>
+              <span class="chip">GitHub Actions</span>
+              <span class="chip">Watchtower</span>
+              <span class="chip">Jenkins</span>
+            </div>
+          </div>
+
+          <div>
+            <p class="stack-groups__group-label">Practice</p>
+            <div class="chip-row">
+              <span class="chip">TDD</span>
+              <span class="chip">CI/CD ownership</span>
+              <span class="chip">Clean Code</span>
+              <span class="chip">Code review</span>
+              <span class="chip">Full SDLC</span>
+              <span class="chip">Agile / Scrum</span>
+              <span class="chip">Spec-driven dev</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

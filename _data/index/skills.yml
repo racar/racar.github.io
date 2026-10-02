@@ -1,6 +1,0 @@
-# skills section data
-
-label: Backend Engineer
-id : cs
-aspects: Ruby on Rails, Python / PySpark, PostgreSQL, AWS / Docker / CI-CD, RSpec / TDD, AI-assisted Dev
-percentage: 95, 85, 90, 85, 90, 88

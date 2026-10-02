@@ -1,0 +1,160 @@
+@use '../abstracts/primitives' as *;
+@use '../abstracts/mixins' as *;
+
+// Timeline for 7 roles spanning 2009-2026. Tiered by RELEVANCE, not recency
+// — Corficolombiana is 6 years of regulated-banking work and is deliberately
+// promoted out of the bottom of the list rather than buried in grey text.
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+// The rail. Decorative only — it carries no meaning, so it is a pseudo
+// element rather than markup.
+.timeline::before {
+  content: '';
+  position: absolute;
+  inset-block: 6px 6px;
+  inset-inline-start: 5px;
+  width: 2px;
+  background: var(--line-hairline);
+}
+
+.timeline__item {
+  position: relative;
+  padding-inline-start: $space-6;
+  padding-block-end: $space-6;
+}
+
+.timeline__item:last-child {
+  padding-block-end: 0;
+}
+
+// Ring punches the node through the rail so the two don't merge.
+.timeline-node {
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--brand);
+  box-shadow: 0 0 0 3px var(--bg-0);
+}
+
+.timeline__item--standard .timeline-node,
+.timeline__item--brief .timeline-node {
+  width: 9px;
+  height: 9px;
+  inset-block-start: 8px;
+  background: var(--line-strong);
+}
+
+.timeline__dates {
+  @include meta;
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2 $space-3;
+  margin-block-end: $space-2;
+}
+
+.timeline__duration {
+  padding: 1px $space-2;
+  background: var(--surface-sunken);
+  border-radius: var(--radius-xs);
+}
+
+.timeline__role {
+  margin: 0;
+  font-size: $fs-base;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--text-1);
+}
+
+// Role and organisation are on separate lines. Run together as
+// "Ruby Back-End Developer @ Monokera — Insurtech" the company name and the
+// sector competed for the same visual weight as the job title, and the
+// longest entries wrapped awkwardly.
+.timeline__org-line {
+  margin: $space-1 0 0;
+  font-size: $fs-sm;
+  line-height: 1.4;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: $space-2;
+}
+
+.timeline__org {
+  color: var(--text-brand);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.timeline__org:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.timeline__context {
+  color: var(--text-3);
+}
+
+.timeline__metric {
+  margin-block-start: $space-3;
+}
+
+.timeline__summary {
+  margin: $space-3 0 0;
+  font-size: $fs-sm;
+  line-height: var(--lh-body);
+  color: var(--text-2);
+  max-width: 62ch;
+}
+
+.timeline__highlights {
+  list-style: none;
+  padding: 0;
+  margin: $space-4 0 0;
+  display: grid;
+  gap: $space-2;
+}
+
+.timeline__highlights li {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: $space-3;
+  font-size: $fs-sm;
+  line-height: var(--lh-tight-body);
+  color: var(--text-2);
+}
+
+.timeline__highlights .icon {
+  color: var(--brand);
+  margin-block-start: 3px;
+}
+
+.timeline__stack {
+  margin-block-start: $space-4;
+}
+
+.timeline__item--featured {
+  background: var(--surface-card);
+  border: 1px solid var(--line-hairline);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2);
+  padding: $space-5 $space-5 $space-5 $space-6;
+  margin-block-end: $space-5;
+}
+
+.timeline__item--standard {
+  padding-block-end: $space-5;
+}
+
+.timeline__item--brief .timeline__summary {
+  margin-block-start: $space-2;
+}

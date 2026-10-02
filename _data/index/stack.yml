@@ -1,0 +1,50 @@
+# Stack section. Replaces the old Chart.js radar + skills.yml.
+#
+# tier    core | proficient | working  — the LABEL carries the meaning,
+#                                       colour is redundant reinforcement.
+# years   years of production use
+# proof   a concrete, checkable claim — not a restatement of the label
+#
+# Self-assessed percentages (the old 95/85/90) were removed deliberately:
+# radar charts encode area not value, and an unverifiable score reads worse
+# than none. Figures here are aligned with the CV.
+
+- label: Ruby on Rails
+  tier: core
+  years: 10
+  proof: Production Rails backends across fintech, insurtech and e-commerce; 5 products at Monokera.
+
+- label: Python / PySpark
+  tier: core
+  years: 4
+  proof: PySpark pipeline ingesting and transforming datos.gov.co — 900+ funds refreshed monthly.
+
+- label: PostgreSQL
+  tier: core
+  years: 7
+  proof: JSONB schema design for policy data, improving query performance by 40%.
+
+- label: RSpec / TDD
+  tier: core
+  years: 7
+  proof: High-coverage suites maintained over regulated lending and money-handling code paths.
+
+- label: AWS / Docker / CI-CD
+  tier: proficient
+  years: 5
+  proof: Lambda + S3→SFTP transfer with zero data loss; Docker on VPS; GitHub Actions, Watchtower, Jenkins.
+
+- label: AI-assisted development
+  tier: proficient
+  years: 2
+  proof: Spec-driven workflow with Claude Code and OpenCode; Mistral integration in production.
+
+- label: JavaScript / Angular / Liquid
+  tier: working
+  years: 4
+  proof: MVPs in Angular and Ionic; Shopify storefronts and admin UI at CINTE Iberia.
+
+- label: Java
+  tier: working
+  years: 8
+  proof: Enterprise systems and microservice integrations at Corficolombiana and Grupo Ditech.

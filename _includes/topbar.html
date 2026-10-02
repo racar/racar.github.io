@@ -1,0 +1,88 @@
+<header class="topbar">
+  <div class="topbar__inner">
+    <a class="topbar__brand" href="{{ '/' | relative_url }}">
+      <span class="topbar__brand-short">Rafael C.</span>
+      <span class="topbar__brand-full">{{ site.owner.name }}</span>
+    </a>
+
+    <nav class="topbar__nav" aria-label="Primary">
+      <ul>
+        {% if page.url == '/' %}
+          {% comment %}
+          In-page anchors. Only rendered on the homepage — on /rentafic/ or
+          /writing/ these fragments would point at sections that do not exist
+          on the current page.
+
+          Priority order for dropping links as the viewport narrows:
+            data-optional    hidden below 44rem  (About, Stack, Experience)
+            data-optional-2  hidden below 34rem  (Contact)
+          Work and Writing always survive, because they are the only two
+          links that reach a different page.
+          {% endcomment %}
+          {% assign nav_items = "work,about,stack,experience,contact" | split: "," %}
+          {% for item in nav_items %}
+            <li>
+              <a href="#{{ item }}"{% if forloop.first %} aria-current="page"{% endif %}
+                {% if item == 'about' or item == 'stack' or item == 'experience' %} data-optional{% endif %}
+                {% if item == 'contact' %} data-optional-2{% endif %}>
+                {{ item | capitalize }}
+              </a>
+            </li>
+          {% endfor %}
+        {% else %}
+          <li><a href="{{ '/' | relative_url }}#work"{% if page.url == '/rentafic/' %} aria-current="page"{% endif %}>Work</a></li>
+          <li><a href="{{ '/' | relative_url }}#experience" data-optional>Experience</a></li>
+        {% endif %}
+
+        <li>
+          <a href="{{ '/writing/' | relative_url }}"{% if page.url == '/writing/' %} aria-current="page"{% endif %}>Writing</a>
+        </li>
+      </ul>
+    </nav>
+
+    {% include theme-toggle.html %}
+
+    <a class="btn btn--primary topbar__cta" href="mailto:{{ site.email }}?subject=Backend%20role%20%E2%80%94%20Colombia%20%2F%20remote">Email</a>
+  </div>
+</header>
+
+<script>
+  // Theme toggle behaviour. Deliberately inline and dependency-free — a 12-line
+  // script avoids a render-blocking external request for one button.
+  (function () {
+    var root = document.documentElement;
+    var btn = document.querySelector('[data-theme-toggle]');
+    if (!btn) return;
+
+    // No stored preference means the site default, which is dark. The OS is
+    // deliberately not consulted: the default has to apply to everyone, not
+    // only to people whose OS already agrees with it.
+    function effective() {
+      return root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    }
+
+    function sync() {
+      var theme = effective();
+      btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+      // The label names the ACTION, not the current state, so it stays correct
+      // after the click without needing a second announcement.
+      btn.setAttribute(
+        'aria-label',
+        theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
+      );
+      btn.title = theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
+    }
+
+    btn.hidden = false; // revealed only now, so it never appears inert
+    btn.addEventListener('click', function () {
+      var next = effective() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try {
+        localStorage.setItem('theme', next);
+      } catch (e) { /* storage blocked; the toggle still works for this page */ }
+      sync();
+    });
+
+    sync();
+  })();
+</script>

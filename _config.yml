@@ -1,67 +1,87 @@
 #
-###################################
-# Site wide configuration
-####################################
+# Site configuration
 #
-title: Rafael Carrascal Reyes — Backend Engineer
+
+title: Rafael Carrascal Reyes — Backend Systems Engineer
 email: rcarrascal@gmail.com
-description: "Backend Engineer (Ruby on Rails / Python) — fintech, insurtech, AI-assisted development. Featured project RentaFIC.co"
-url: https://racar.github.io/ # the base hostname & protocol for your site
-keywords: ["Backend Engineer","Ruby on Rails","Python","PySpark","PostgreSQL","AWS","AI Agents","Fintech","Insurtech","RentaFIC" ]
+description: >-
+  Backend Systems Engineer in Colombia. Ruby on Rails and Python, fintech and insurtech.
+  15+ years shipping mission-critical backends, data pipelines and AI-assisted workflows.
+url: https://racar.github.io
+lang: en
+
+keywords:
+  - Backend Systems Engineer
+  - Ruby on Rails
+  - Python
+  - PySpark
+  - PostgreSQL
+  - AWS
+  - Fintech
+  - Insurtech
+  - AI Agents
+  - RentaFIC
 
 #
-###################################
-# Jekyll configuration
-####################################
+# Jekyll
 #
-timezone:          Europe/Paris
-markdown:          kramdown
-highlighter:       rouge
-excerpt_separator: <!--more-->
-permalink:         /articles/:year-:month/:title
+
+timezone: Europe/Paris
+markdown: kramdown
+highlighter: rouge
+excerpt_separator: "<!--more-->"
+permalink: /articles/:year-:month/:title
 
 kramdown:
   auto_ids: true
   footnote_nr: 1
   entity_output: as_char
   toc_levels: 1..6
-  enable_coderay: false
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
+
+# Plugins are deliberately absent. jekyll-feed and jekyll-sitemap would need
+# GitHub Actions to run, and the deploy path is the native Pages build. The
+# feed is hand-maintained in feed.xml and robots/sitemap are static.
+plugins: []
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - README.md
+  - LICENSE.txt
+  - .jekyll-cache
+  - node_modules
+  # Dev-only harnesses: they need a browser to be useful and must never be
+  # published or audited as site pages.
+  - script
+
+sass:
+  style: compressed
+  sass_dir: _sass
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
 
 #
-###################################
-# Site Owner configuration
-####################################
+# Site owner
 #
+# Trimmed from 25 empty social placeholders. Every key here is actually
+# rendered — no dead conditionals. Note the years figure: the career starts in
+# 2009 as an analyst, but full-time development from 2015, which is the
+# honest number for "years building software".
+#
+
 owner:
   name: Rafael A. Carrascal Reyes
-  avatar: racar.png
-  job: "Backend Engineer • Ruby on Rails / Python"
-  bio: "8+ years fintech & insurtech. Featured: RentaFIC.co — real returns of 900+ FICs in Colombia."
+  job: Backend Systems Engineer · Ruby on Rails / Python
   email: rcarrascal@gmail.com
-  disqus-shortname: racar
-  twitter: R4C4R #username
-  facebook: #username
-  google:
-    plus: #username
-    analytics: UA-62251910-2
-    verify:
-    ad-client:
-    ad-slot:
-  bing-verify:
-  github: racar #username
-  stackoverflow: 1527024/username   #from a "http://stackoverflow.com/users/1527024/username" link
-  linkedin: racar #username
-  xing: #username
-  instagram: #username
-  lastfm: #username
-  tumblr: #username
-  pinterest: #username
-  foursquare: #username
-  steam: #username
-  dribbble: #username
-  youtube: #username
-  soundcloud: #username
-  weibo: #username
-  flickr: #username
-  codepen: #username
-  telegram: #username
+  location: Colombia (remote — US/EU overlap)
+  github: racar
+  linkedin: racar

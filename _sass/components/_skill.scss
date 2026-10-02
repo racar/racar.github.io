@@ -1,0 +1,93 @@
+@use '../abstracts/primitives' as *;
+@use '../abstracts/mixins' as *;
+
+// Replaces the Chart.js radar. Each entry is a definition-list row: label,
+// tier, years, and a proof line that is a concrete claim rather than a
+// restatement of the label.
+.stack-list {
+  margin: 0;
+}
+
+.stack-list__row {
+  container-type: inline-size;
+  display: grid;
+  gap: $space-2;
+  padding-block: $space-5;
+  border-block-end: 1px solid var(--line-hairline);
+}
+
+.stack-list__row:last-child {
+  border-block-end: 0;
+}
+
+// Grid, not flex-wrap: with flex, a long label ("AI-assisted development")
+// pushed the tier chip and years onto a second line and left the years
+// column ragged across rows. Grid keeps all three on one line and aligns the
+// tier chips down the column.
+.stack-list__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'label years'
+    'tier  years';
+  align-items: center;
+  column-gap: $space-3;
+  row-gap: $space-2;
+}
+
+.stack-list__label {
+  grid-area: label;
+  margin: 0;
+  font-size: $fs-base;
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.stack-list__row .tier-chip {
+  grid-area: tier;
+  justify-self: start;
+}
+
+.stack-list__years {
+  grid-area: years;
+  @include meta;
+  white-space: nowrap;
+}
+
+.stack-list__proof {
+  margin: 0;
+  font-size: $fs-sm;
+  line-height: var(--lh-body);
+  color: var(--text-2);
+  max-width: 60ch;
+}
+
+@container (min-width: 40rem) {
+  .stack-list__row {
+    grid-template-columns: 14rem 1fr;
+    gap: $space-5;
+    align-items: start;
+  }
+
+  .stack-list__proof {
+    margin: 0;
+  }
+}
+
+// Grouped chips: languages / data / infra / practice.
+.stack-groups {
+  display: grid;
+  gap: $space-5;
+  align-content: start;
+}
+
+.stack-groups__group-label {
+  @include eyebrow;
+  margin-block-end: $space-3;
+}
+
+@media (max-width: 46rem) {
+  .stack-layout__inner {
+    gap: var(--space-7);
+  }
+}

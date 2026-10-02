@@ -1,0 +1,178 @@
+@use '../abstracts/primitives' as *;
+@use '../abstracts/mixins' as *;
+
+.card {
+  background: var(--surface-card);
+  border: 1px solid var(--line-hairline);
+  border-radius: var(--radius-lg);
+  padding: $space-6;
+  box-shadow: var(--shadow-2);
+}
+
+// The RentaFIC case card — the page's centrepiece. Dark surface on a light
+// page is the strongest visual weight available in this palette, and nothing
+// else on the page does it.
+.case-card {
+  @include on-dark;
+  container-type: inline-size;
+  position: relative;
+  background: var(--hero-base);
+  background-image: radial-gradient(
+      var(--hero-glow) 0%,
+      transparent 58%
+    ),
+    radial-gradient(var(--hero-glow) 100% 100%, transparent 55%);
+  color: var(--hero-text);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  // The 1px brand ring inside --shadow-case is not decoration. In dark mode
+  // shadows are invisible and the surface step from --bg-0 to --surface-card
+  // is only 1.06:1, so without it the card reads as a hole in the page.
+  box-shadow: var(--shadow-case);
+}
+
+.case-card__body {
+  padding: $space-6;
+  @container (min-width: 46rem) {
+    padding: $space-7;
+  }
+}
+
+.case-card__title {
+  color: var(--hero-text);
+  font-size: $fs-3xl;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: var(--lh-tight);
+}
+
+.case-card__tagline {
+  @include meta;
+  color: var(--hero-text-3);
+  margin-block-start: $space-2;
+}
+
+.case-card__lede {
+  font-size: $fs-md;
+  line-height: 1.6;
+  color: var(--hero-text-2);
+  margin-block-start: $space-4;
+  max-width: 56ch;
+}
+
+.case-card__descr {
+  color: var(--hero-text-3);
+  line-height: var(--lh-body);
+  margin-block-start: $space-4;
+  max-width: 62ch;
+}
+
+// Full-width banner across the top of the card. The asset is 2.46:1, so
+// giving it the full card width keeps the screenshot legible — in a narrow
+// side column it was scaled down far enough to be unreadable.
+.case-card__media {
+  position: relative;
+  border-block-end: 1px solid var(--hero-line);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.case-card__media img {
+  width: 100%;
+  height: auto;
+}
+
+// The banner already carries the RentaFIC wordmark, so an overlaid "Live"
+// badge collides with it and reads as a duplicate label. It moves below the
+// media, next to the project title, where it labels the project rather than
+// the image.
+.case-card__badge {
+  margin-block-end: $space-3;
+}
+
+.case-card__metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  padding-block: $space-5;
+  margin-block-start: $space-5;
+  border-block: 1px solid var(--hero-line);
+}
+
+.case-card__metric dt {
+  @include eyebrow;
+  color: var(--hero-text-3);
+  font-size: var(--fs-2xs);
+}
+
+.case-card__metric dd {
+  margin: 0;
+  font-size: $fs-xl;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--hero-text);
+  line-height: 1.15;
+}
+
+.case-card__highlights {
+  list-style: none;
+  padding: 0;
+  margin-block-start: $space-5;
+  display: grid;
+  gap: $space-2;
+}
+
+.case-card__highlights li {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: $space-3;
+  align-items: start;
+  font-size: $fs-sm;
+  line-height: var(--lh-tight-body);
+  color: var(--hero-text-2);
+}
+
+.case-card__highlights .icon {
+  color: var(--brand-decorative);
+  margin-block-start: 2px;
+}
+
+.case-card__stack {
+  margin-block-start: $space-6;
+}
+
+.case-card__stack-label {
+  @include eyebrow;
+  color: var(--hero-text-3);
+  font-size: var(--fs-2xs);
+  margin-block-end: $space-3;
+}
+
+.case-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-3;
+  margin-block-start: $space-6;
+}
+
+// Two-column body below the banner: narrative on the left, evidence on the
+// right. Stacked below the container breakpoint.
+.case-card__body {
+  display: grid;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+@container (min-width: 56rem) {
+  .case-card__body {
+    grid-template-columns: 1.15fr 1fr;
+    gap: var(--space-7);
+  }
+}
+
+@container (max-width: 46rem) {
+  .case-card__metrics {
+    grid-template-columns: 1fr;
+    gap: $space-4;
+  }
+}

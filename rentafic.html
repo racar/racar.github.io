@@ -1,0 +1,167 @@
+---
+layout: default
+permalink: /rentafic/
+title: "RentaFIC — case study"
+description: "How RentaFIC calculates the real, inflation-adjusted returns of 900+ Colombian FICs and 500+ FPVs: the data problem, the PySpark pipeline, and what I learned building it."
+---
+{% assign project = site.data.index.projects | first %}
+<article class="page section">
+  <a class="back-home" href="{{ '/' | relative_url }}#work">
+    <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-left"></use></svg>
+    Back to work
+  </a>
+
+  <header class="section__head">
+    <p class="eyebrow">{{ project.kind }} · {{ project.year }}</p>
+    <h1 class="display" style="margin-block-start: var(--space-3)">{{ project.name }}</h1>
+    <p class="lede" style="margin-block-start: var(--space-4); max-width: 62ch">{{ project.lede }}</p>
+
+    <div class="chip-row" style="margin-block-start: var(--space-5)">
+      <span class="badge">
+        <span class="badge__dot" aria-hidden="true"></span>
+        {{ project.status }}
+      </span>
+      {% assign stack_items = project.stack | split: ", " %}
+      {% for item in stack_items %}
+        <span class="chip">{{ item }}</span>
+      {% endfor %}
+    </div>
+  </header>
+
+  <div class="hero" style="border-radius: var(--radius-xl); overflow: hidden">
+    <img
+      src="{{ '/img/' | append: project.image | relative_url }}"
+      width="{{ project.image_width }}"
+      height="{{ project.image_height }}"
+      alt="{{ project.image_alt | strip_newlines }}"
+      style="width:100%;height:auto"
+      decoding="async">
+
+    <dl class="hero__stats" style="padding: var(--space-5) var(--space-6); border-block-start: 1px solid var(--hero-line)">
+      {% for metric in project.metrics %}
+        <div class="hero__stat">
+          <dt>{{ metric.label }}</dt>
+          <dd>{{ metric.value }}</dd>
+        </div>
+      {% endfor %}
+    </dl>
+  </div>
+
+  <div class="grid-2" style="margin-block-start: var(--space-7)">
+    <div class="grid-2__inner--split">
+      <div class="prose">
+        <h2>The problem</h2>
+        <p>
+          Colombian investment funds advertise their returns as nominal
+          percentages. A FIC that reports "12% annual return" tells you almost
+          nothing: if inflation ran at 9% that year, the investor kept about 3%
+          in real terms — before management fees, admin fees, and the sales
+          load, which quietly take another one to two points.
+        </p>
+        <p>
+          The gap is not subtle, and it is not unknown to anyone who has
+          actually tried to compare two FICs. It is simply that nobody in
+          Colombia publishes the corrected number. The data exists, spread
+          across regulator filings and a government open-data portal, and the
+          arithmetic is not hard. Nobody had assembled it.
+        </p>
+
+        <h2>The data problem</h2>
+        <p>
+          Two sources, neither friendly:
+        </p>
+        <ul>
+          <li>
+            <strong>datos.gov.co</strong> — Colombia's open government data
+            portal. It has the fund-level series, but no clean API, irregular
+            update cadence, and inconsistent field naming between datasets.
+          </li>
+          <li>
+            <strong>SFC filings</strong> — official Supervisora Financiera de
+            Colombia disclosures. Authoritative, but published as documents and
+            tables rather than a queryable feed.
+          </li>
+        </ul>
+        <p>
+          Neither source gives you a return figure directly. Both give you
+          holdings and periodic values, from which returns have to be derived
+          correctly — which is exactly the part where a naive implementation
+          gets it wrong and produces a number that looks authoritative and is
+          not.
+        </p>
+
+        <h2>The pipeline</h2>
+        <p>
+          A PySpark job normalises both sources into a single schema, joins
+          them on fund identity, and computes cumulative real returns net of
+          fees. Results land in Supabase. A Streamlit frontend serves the
+          public ranking and per-fund analysis, with Supabase handling auth.
+        </p>
+        <p>
+          The whole thing runs monthly. Docker on a VPS, with GitHub Actions
+          and Watchtower handling zero-downtime updates.
+        </p>
+
+        <h2>What I built on top</h2>
+        <ul>
+          {% for highlight in project.highlights %}
+            <li>{{ highlight }}</li>
+          {% endfor %}
+        </ul>
+
+        <h2>Lessons</h2>
+        <p>
+          <strong>Derived numbers need their assumptions surfaced.</strong> A
+          "real return" figure is only trustworthy if you can see how fees and
+          inflation were handled. Showing the nominal figure next to the real
+          one, with the gap explicit, did more for trust than any amount of
+          polish.
+        </p>
+        <p>
+          <strong>The chatbot is a better interface than I expected.</strong> Most
+          fund questions are not "what is fund X's return" — they are "why is my
+          money losing money when the index is up". Answering that in natural
+          language turned out to be the product's main value, not a feature
+          bolted on.
+        </p>
+        <p>
+          <strong>Spec-driven AI-assisted development worked, with a caveat.</strong>
+          Writing the data contract and the expected outputs down first made the
+          AI-assisted parts dramatically faster and easier to verify. What it
+          did not remove was the need to check the arithmetic by hand. Derived
+          financial figures are exactly the case where you do not trust
+          generation without an independent check.
+        </p>
+      </div>
+
+      <aside class="stack-groups">
+        <div class="card">
+          <p class="stack-groups__group-label">At a glance</p>
+          <dl class="stack-list" style="font-size: var(--fs-sm)">
+            {% for metric in project.metrics %}
+              <div class="stack-list__row" style="padding-block: var(--space-3)">
+                <div class="stack-list__head">
+                  <dt class="stack-list__label" style="font-size: var(--fs-sm)">{{ metric.label }}</dt>
+                </div>
+              </div>
+            {% endfor %}
+          </dl>
+        </div>
+
+        <div>
+          <p class="stack-groups__group-label">Links</p>
+          <div class="stack-groups" style="gap: var(--space-3)">
+            <a class="btn btn--primary" href="{{ project.website }}" rel="noopener" style="width:100%">
+              <svg class="icon icon--sm" aria-hidden="true"><use href="#i-external"></use></svg>
+              rentafic.co
+            </a>
+            <a class="btn btn--outline" href="{{ project.github }}" rel="noopener" style="width:100%">
+              <svg class="icon icon--sm" aria-hidden="true"><use href="#i-github"></use></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</article>

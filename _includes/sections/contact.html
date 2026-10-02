@@ -1,0 +1,67 @@
+<section class="contact section" id="contact">
+  <div class="page">
+    <div class="grid-2">
+      <div class="grid-2__inner">
+        <div>
+          <p class="eyebrow">Contact</p>
+          <h2 class="h-section" style="margin-block-start: var(--space-3)">
+            Open to backend and AI-engineering roles
+          </h2>
+
+          <p class="contact__lede" style="margin-block-start: var(--space-4)">
+            Colombia-based, comfortable with US and EU overlap. If you are
+            building backends in fintech or insurtech — or you have a data
+            problem nobody wants to own — I would like to hear about it.
+          </p>
+
+          <a class="contact__email" href="mailto:{{ site.email }}?subject=Backend%20role%20%E2%80%94%20Colombia%20%2F%20remote">{{ site.email }}</a>
+
+          <p class="contact__replies">I reply to everything within 24 hours.</p>
+        </div>
+
+        <div class="contact__channels">
+          <a class="contact__channel" href="mailto:{{ site.email }}">
+            <svg class="icon" aria-hidden="true"><use href="#i-mail"></use></svg>
+            <span>
+              <span class="contact__channel-label">Email</span>
+              <span class="contact__channel-handle">{{ site.email }}</span>
+            </span>
+          </a>
+
+          <a class="contact__channel" href="https://linkedin.com/in/{{ site.owner.linkedin }}" rel="noopener me">
+            <svg class="icon" aria-hidden="true"><use href="#i-linkedin"></use></svg>
+            <span>
+              <span class="contact__channel-label">LinkedIn</span>
+              <span class="contact__channel-handle">in/{{ site.owner.linkedin }}</span>
+            </span>
+          </a>
+
+          <a class="contact__channel" href="https://github.com/{{ site.owner.github }}" rel="noopener me">
+            <svg class="icon" aria-hidden="true"><use href="#i-github"></use></svg>
+            <span>
+              <span class="contact__channel-label">GitHub</span>
+              <span class="contact__channel-handle">@{{ site.owner.github }}</span>
+            </span>
+          </a>
+        </div>
+
+        {% for edu in site.data.index.education %}
+          <div class="contact__creds">
+            <div>
+              <p class="contact__cred-label">Education</p>
+              <p class="contact__cred-value">
+                {% if edu.link %}<a href="{{ edu.link }}" rel="noopener">{% endif %}
+                  {{ edu.name }} — {{ edu.program }}
+                {% if edu.link %}</a>{% endif %}
+              </p>
+            </div>
+            <div>
+              <p class="contact__cred-label">Timezone</p>
+              <p class="contact__cred-value">UTC−5 · COT — overlaps EU morning, US morning</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,125 @@
+@use '../abstracts/primitives' as *;
+@use '../abstracts/mixins' as *;
+
+// Replaces Font Awesome. ~12 symbols inlined once, currentColor throughout,
+// so icons inherit text colour and need no separate colour rules.
+
+.icon-sprite {
+  display: none;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon--sm {
+  width: 16px;
+  height: 16px;
+}
+
+.icon--filled {
+  fill: currentColor;
+  stroke: none;
+}
+
+// ─── BADGE ─────────────────────────────────────────────────────────────
+// The status dot is decoration (1.4.1) — the text label carries the meaning,
+// so the component is never colour-only or dot-only.
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-1 $space-3;
+  border: 1px solid var(--line-brand);
+  border-radius: var(--radius-pill);
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: var(--text-brand);
+  background: transparent;
+}
+
+.badge__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brand-decorative);
+  flex-shrink: 0;
+}
+
+.badge--dark {
+  @include on-dark;
+  border-color: var(--hero-line);
+  color: var(--hero-text-2);
+}
+
+// ─── CHIP ──────────────────────────────────────────────────────────────
+// nowrap is load-bearing: a technology name must never break mid-token.
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: $space-1 $space-3;
+  background: var(--surface-sunken);
+  border-radius: var(--radius-sm);
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.chip--dark {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--hero-text-2);
+}
+
+// ─── TIER CHIP ─────────────────────────────────────────────────────────
+// core / proficient / working. The TEXT is the signal; the colour is
+// redundant reinforcement. Never rely on colour alone.
+.tier-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px $space-2;
+  border-radius: var(--radius-xs);
+  font-family: $font-mono;
+  font-size: $fs-2xs;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  // --blue-700 on --blue-050 is 6.16:1. --blue-600 on the same tint is
+  // only 4.6:1, still too thin to survive rounding, so tints use 700.
+  color: var(--text-brand);
+  background: var(--surface-brand);
+}
+
+// ─── METRIC CHIP ───────────────────────────────────────────────────────
+.metric-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: $space-1 $space-3;
+  border: 1px solid var(--line-brand);
+  border-radius: var(--radius-pill);
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-brand);
+  white-space: nowrap;
+}
+
+.metric-chip--dark {
+  @include on-dark;
+  border-color: var(--hero-line);
+  color: var(--hero-text-2);
+}

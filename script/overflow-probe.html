@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>overflow probe</title>
+<style>
+  body { font: 11px/1.4 monospace; margin: 0; padding: 8px; }
+  iframe { border: 1px solid #ccc; }
+  pre { white-space: pre-wrap; margin: 8px 0 0; }
+</style>
+</head>
+<body>
+<iframe id="f"></iframe>
+<pre id="out">loading</pre>
+<script>
+// ?w=viewport width, ?p=path to load. Reports any element whose right edge
+// exceeds the viewport, which is the signature of horizontal overflow.
+const q = new URLSearchParams(location.search);
+const w = parseInt(q.get('w') || '390', 10);
+const path = q.get('p') || '/';
+const f = document.getElementById('f');
+f.width = w;
+f.height = 700;
+f.src = path;
+
+f.onload = () => {
+  const d = f.contentDocument;
+  const winW = f.contentWindow.innerWidth;
+  const doc = d.documentElement;
+  const out = [`path=${path}`, `viewport=${winW}`,
+               `scrollWidth=${doc.scrollWidth}`,
+               `bodyScrollWidth=${d.body.scrollWidth}`, ''];
+
+  // Report overflowing elements UNCONDITIONALLY. Relying on scrollWidth alone
+  // misses the worst case: an ancestor with overflow:hidden clips the content
+  // so no scrollbar appears and scrollWidth looks fine, while text is silently
+  // cut off at the viewport edge.
+  const seen = new Set();
+  let count = 0;
+  for (const el of d.querySelectorAll('body *')) {
+    const r = el.getBoundingClientRect();
+    if (r.right > winW + 1 && r.width > 0) {
+      const key = el.tagName + '.' + el.className;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      count++;
+      // Walk up to find what is clipping it, if anything.
+      let clipper = '';
+      for (let p = el.parentElement; p; p = p.parentElement) {
+        const ov = f.contentWindow.getComputedStyle(p).overflowX;
+        if (ov === 'hidden' || ov === 'clip' || ov === 'auto' || ov === 'scroll') {
+          clipper = `  clipped-by=<${p.tagName.toLowerCase()} class="${p.className || ''}">`;
+          break;
+        }
+      }
+      out.push(`right=${Math.round(r.right)} w=${Math.round(r.width)} ` +
+               `<${el.tagName.toLowerCase()} class="${el.className || ''}">${clipper}`);
+    }
+  }
+  out.push('');
+  out.push(count ? `${count} overflowing element group(s)` : 'no horizontal overflow');
+  document.getElementById('out').textContent = out.slice(0, 45).join('\n');
+};
+</script>
+</body>
+</html>

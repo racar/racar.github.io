@@ -1,0 +1,24 @@
+<section class="section" id="writing">
+  <div class="page">
+    <div class="section__head">
+      <p class="eyebrow">Writing</p>
+      <h2 class="h-section">Notes from the work</h2>
+    </div>
+
+    {% if site.posts.size > 0 %}
+      <ul class="writing-list">
+        {% for post in site.posts %}
+          <li class="writing-list__item">
+            <a class="writing-list__link" href="{{ post.url | relative_url }}">
+              <span class="writing-list__date">{{ post.date | date: '%Y' }}</span>
+              <span class="writing-list__title">{{ post.title }}</span>
+              <svg class="icon icon--sm writing-list__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="empty-note">Nothing published yet.</p>
+    {% endif %}
+  </div>
+</section>

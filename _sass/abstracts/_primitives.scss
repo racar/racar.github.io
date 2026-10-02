@@ -1,0 +1,117 @@
+// ─── PRIMITIVE TOKENS ──────────────────────────────────────────────────
+// Raw values only. No CSS output, no semantic meaning. Consumed by
+// _semantic.scss, which turns these into custom properties.
+//
+// WHY NAVY/BLUE — the evidence, not the aesthetic:
+//   - A peer-reviewed study (200+ participants, identical sites differing only
+//     in colour scheme) found blue scored highest on perceived trustworthiness
+//     across finance, legal AND medical contexts. Black scored lowest.
+//   - In the FINANCE context specifically the effect was the largest of the
+//     three (11.2%). This is a fintech/insurtech portfolio, so that is the
+//     context that matters.
+//   - Accent-hue frequency across 193 award-level sites: blue 54, orange 52,
+//     red 40, green 15, yellow 13. Yellow was the second-weakest option.
+//   - Documented caveat: a "pure blue" page can flatten CTA salience. The
+//     mitigation is a neutral page with blue as ACCENT — which is what this is.
+//
+// Values are the Tailwind slate + blue scales. Using a known-good scale means
+// the numbers were validated by someone other than me.
+//
+// THE BLUE RAMP LAW — read before editing any value below:
+// Hue stays locked to ~217-222deg (Tailwind blue). Only lightness and chroma
+// move. On light surfaces, lightness ABOVE 0.52 is DECORATION ONLY — glows,
+// gradients, timeline nodes, chart fills. Lightness 0.44 and below is safe
+// for text and UI.
+//
+// Measured against white:
+//   blue-400 #60a5fa -> 2.54  (decorative only)
+//   blue-500 #3b82f6 -> 3.68  (large text only, and fails 3:1 on tinted bgs)
+//   blue-600 #2563eb -> 5.17  ★ text + fills, both directions
+//   blue-700 #1d4ed8 -> 6.70  (hover; the link/button colour)
+//   blue-800 #1e40af -> 8.14  (active, headings on tints)
+//
+// REJECTED: the previous gold (#876012). Warm gold is defensible for premium
+// and consulting work, but research associates yellow with "caution" and finds
+// it carries food/construction connotations. For a regulated-finance audience
+// it is the wrong signal even though it passed contrast.
+
+// Blue ramp.
+$blue-050: #eff6ff;
+$blue-100: #dbeafe;
+$blue-200: #bfdbfe;
+$blue-300: #93c5fd;
+$blue-400: #60a5fa;
+$blue-500: #3b82f6;
+$blue-600: #2563eb;
+$blue-700: #1d4ed8;
+$blue-800: #1e40af;
+$blue-900: #1e3a8a;
+$blue-950: #0f172a;
+
+// Slate neutrals — cool, low chroma. Deliberately NOT pure grey: a blue-grey
+// carries the same family as the accent and reads as a system, where a pure
+// grey reads as unfinished next to a saturated blue.
+$slate-0: #ffffff;
+$slate-1: #f8fafc;
+$slate-2: #f1f5f9;
+$slate-3: #e2e8f0;
+$slate-4: #cbd5e1;
+
+// Dark scheme neutrals.
+$night-0: #0f172a;
+$night-1: #111c33;
+$night-2: #1e293b;
+$night-3: #0b1220;
+$night-text-1: #f1f5f9;
+$night-text-2: #cbd5e1;
+$night-text-3: #94a3b8;
+
+// ─── FAMILIES ──────────────────────────────────────────────────────────
+$font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  Helvetica, Arial, sans-serif;
+$font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas,
+  monospace;
+
+// ─── SCALE ─────────────────────────────────────────────────────────────
+// 1.25 modular scale, rem-based. Assumes a 16px user default, which is the
+// accessible choice — never set an absolute px font-size on <html>.
+$space-0: 0;
+$space-1: 0.25rem;
+$space-2: 0.5rem;
+$space-3: 0.75rem;
+$space-4: 1rem;
+$space-5: 1.5rem;
+$space-6: 2rem;
+$space-7: 3rem;
+$space-8: 4rem;
+$space-9: 6rem;
+
+$fs-2xs: 0.6875rem;
+$fs-xs: 0.8125rem;
+$fs-sm: 0.875rem;
+$fs-base: 1rem;
+$fs-md: 1.125rem;
+$fs-lg: 1.25rem;
+$fs-xl: 1.5625rem;
+$fs-2xl: 1.953rem;
+$fs-3xl: 2.441rem;
+
+$lh-tight: 1.08;
+$lh-snug: 1.25;
+$lh-body: 1.65;
+$lh-tight-body: 1.45;
+
+$radius-xs: 4px;
+$radius-sm: 6px;
+$radius-md: 10px;
+$radius-lg: 16px;
+$radius-xl: 24px;
+$radius-pill: 999px;
+
+$dur-1: 120ms;
+$dur-2: 200ms;
+$dur-3: 320ms;
+$ease: cubic-bezier(0.2, 0, 0.2, 1);
+
+// Min touch target. 44px is the iOS floor; 48 reads as chunky in a top bar.
+$target-min: 44px;

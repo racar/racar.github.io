@@ -1,0 +1,86 @@
+@use '../abstracts/primitives' as *;
+@use '../abstracts/mixins' as *;
+
+// 44px min height — the iOS touch floor. 48px reads as chunky in a top bar.
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  min-height: $target-min;
+  padding: 0 $space-5;
+  font-size: $fs-sm;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--dur-1) var(--ease),
+    border-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
+}
+
+// --brand #2563eb with white text is 5.17:1, and dark mode inverts to
+// #60a5fa on #0f172a at 7.02:1. Both directions are driven by the two tokens.
+.btn--primary {
+  background: var(--brand);
+  color: var(--text-inverse);
+
+  &:hover {
+    background: var(--brand-hover);
+  }
+
+  &:active {
+    background: var(--brand-active);
+  }
+}
+
+.btn--outline {
+  background: transparent;
+  color: var(--text-1);
+  border: 1px solid var(--line-strong);
+
+  &:hover {
+    border-color: var(--brand);
+    color: var(--brand-hover);
+  }
+}
+
+.btn--ghost-dark {
+  @include on-dark;
+  background: transparent;
+  color: var(--hero-text);
+  border: 1px solid var(--hero-line);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.btn--solid-dark {
+  @include on-dark;
+  background: var(--hero-text);
+  color: var(--hero-base);
+
+  &:hover {
+    background: var(--hero-text-2);
+  }
+}
+
+.btn--link {
+  @include focus-ring;
+  min-height: auto;
+  padding: 0;
+  background: none;
+  color: var(--text-brand);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+
+  &:hover {
+    color: var(--brand-hover);
+  }
+}
+
+.btn__icon {
+  flex-shrink: 0;
+}

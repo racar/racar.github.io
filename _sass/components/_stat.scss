@@ -1,0 +1,116 @@
+@use '../abstracts/primitives' as *;
+@use '../abstracts/mixins' as *;
+
+.stat-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-5 $space-6;
+  margin: 0;
+}
+
+.stat-strip dt {
+  @include eyebrow;
+  color: var(--text-3);
+}
+
+.stat-strip dd {
+  margin: $space-1 0 0;
+  font-size: $fs-xl;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-1);
+}
+
+// Credential grid — the 4 facts a recruiter checks, separated from prose.
+.creds {
+  display: grid;
+  gap: $space-4;
+  margin: 0;
+  padding: $space-5;
+  background: var(--surface-sunken);
+  border-radius: var(--radius-md);
+}
+
+.creds__label {
+  @include eyebrow;
+  font-size: $fs-2xs;
+}
+
+.creds__value {
+  margin-block-start: 2px;
+  font-size: $fs-sm;
+  color: var(--text-1);
+  font-weight: 600;
+}
+
+@container (min-width: 40rem) {
+  .creds {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+// ─── WRITING ───────────────────────────────────────────────────────────
+// One 2017 post does not earn an h2. This is a compact row, not a section.
+
+.writing-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-block-start: 1px solid var(--line-hairline);
+}
+
+.writing-list__item {
+  border-block-end: 1px solid var(--line-hairline);
+}
+
+.writing-list__link {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: $space-4;
+  min-height: $target-min;
+  padding-block: $space-4;
+  text-decoration: none;
+  color: var(--text-1);
+}
+
+.writing-list__link:hover .writing-list__title {
+  color: var(--brand-hover);
+}
+
+.writing-list__date {
+  @include meta;
+}
+
+.writing-list__title {
+  font-size: $fs-base;
+  font-weight: 600;
+  transition: color var(--dur-1) var(--ease);
+}
+
+.writing-list__arrow {
+  color: var(--text-3);
+}
+
+.writing-list__link:hover .writing-list__arrow {
+  color: var(--brand);
+}
+
+@container (min-width: 40rem) {
+  .writing-list__link {
+    grid-template-columns: 8rem 1fr auto;
+  }
+}
+
+@media (max-width: 34rem) {
+  .writing-list__link {
+    grid-template-columns: 1fr auto;
+    gap: $space-2;
+  }
+
+  .writing-list__date {
+    grid-column: 1 / -1;
+  }
+}

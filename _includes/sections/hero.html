@@ -1,0 +1,43 @@
+{% assign project = site.data.index.projects | first %}
+
+<section class="hero" id="top">
+  <div class="hero__glow" aria-hidden="true"></div>
+
+  <div class="hero__inner">
+    <p class="hero__kicker">Backend Systems Engineer · Ruby on Rails / Python · Colombia (remote)</p>
+
+    <h1 class="hero__name">{{ site.owner.name }}</h1>
+
+    <p class="hero__sub">
+      15+ years building mission-critical financial and insurance platforms, 6
+      of them in regulated banking. I build well-tested backends and data
+      pipelines — and I use AI agents to build them faster.
+    </p>
+
+    <div class="hero__actions">
+      <a class="btn btn--solid-dark" href="{{ project.website }}" rel="noopener">
+        <svg class="icon icon--sm" aria-hidden="true"><use href="#i-external"></use></svg>
+        See {{ project.name }}
+      </a>
+      <a class="btn btn--ghost-dark" href="mailto:{{ site.email }}?subject=Backend%20role%20%E2%80%94%20Colombia%20%2F%20remote">
+        Email me
+      </a>
+      <a class="btn btn--ghost-dark" href="#work">See my work</a>
+    </div>
+
+    <dl class="hero__stats">
+      <div class="hero__stat">
+        <dt>Years in technology</dt>
+        <dd>15+<span class="hero__stat-sub">fintech &amp; regulated banking</span></dd>
+      </div>
+      <div class="hero__stat">
+        <dt>Colombian FICs tracked</dt>
+        <dd>900+<span class="hero__stat-sub">real, inflation-adjusted returns</span></dd>
+      </div>
+      <div class="hero__stat">
+        <dt>Users served at Monokera</dt>
+        <dd>5,000+<span class="hero__stat-sub">across 5 insurance products</span></dd>
+      </div>
+    </dl>
+  </div>
+</section>

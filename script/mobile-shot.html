@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>mobile screenshot harness</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #888; }
+  iframe { display: block; border: 0; }
+</style>
+</head>
+<body>
+<iframe id="f"></iframe>
+<script>
+// Headless Chromium clamps the window to a 500px minimum width, so
+// --window-size=390 actually renders at 500 and a screenshot cropped to 390
+// looks like a layout bug that does not exist. Framing the page in a
+// fixed-width iframe gives a true device-width viewport.
+//
+// ?w=width &p=path &h=height
+const q = new URLSearchParams(location.search);
+const w = parseInt(q.get('w') || '390', 10);
+const h = parseInt(q.get('h') || '844', 10);
+const f = document.getElementById('f');
+f.width = w;
+f.height = h;
+f.src = q.get('p') || '/';
+</script>
+</body>
+</html>

@@ -4,10 +4,11 @@ title: Bajo acoplamiento en la construcción de software. Parte I.
 excerpt: "La ortogonalidad  o bajo acoplamiento es un concepto crítico para producir software fácil de diseñar, construir, probar y mantener"
 categories: [ingeniería de software]
 comments: true
+# Feature image removed: it was a stock photo hotlinked from Flickr (credit
+# "kecko"), which is a third-party runtime dependency with no intrinsic
+# dimensions and therefore a guaranteed layout shift. Re-add with explicit
+# width/height if you want a local hero image here.
 image:
-  feature: https://farm4.staticflickr.com/3947/33884931711_08cb52a9ae_k.jpg
-  credit: kecko
-  creditlink: https://www.flickr.com/photos/kecko/
 ---
 
 

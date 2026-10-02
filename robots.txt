@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://racar.github.io/sitemap.xml

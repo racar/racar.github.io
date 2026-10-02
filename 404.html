@@ -1,0 +1,19 @@
+---
+layout: default
+permalink: /404.html
+title: Page not found
+sitemap: false
+---
+<div class="page error-page">
+  <p class="error-page__code">404</p>
+  <h1 class="error-page__title">That page does not exist</h1>
+  <p class="error-page__body">
+    The link may be stale. Everything on this site is one of: the homepage, the
+    RentaFIC case study, or the writing archive.
+  </p>
+  <div class="error-page__actions">
+    <a class="btn btn--primary" href="{{ '/' | relative_url }}">Home</a>
+    <a class="btn btn--outline" href="{{ '/rentafic/' | relative_url }}">RentaFIC case study</a>
+    <a class="btn btn--outline" href="{{ '/writing/' | relative_url }}">Writing</a>
+  </div>
+</div>

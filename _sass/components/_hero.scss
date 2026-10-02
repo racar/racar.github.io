@@ -1,0 +1,122 @@
+@use '../abstracts/primitives' as *;
+@use '../abstracts/mixins' as *;
+
+// Full-bleed dark hero. The old theme used a 3-stop bright gradient, where
+// contrast is position-dependent and cannot be statically verified — white
+// was 5.34:1 at best but any accent colour failed at the bright end. A dark
+// base with a composited glow makes the worst field provably >= 7:1.
+.hero {
+  @include on-dark;
+  position: relative;
+  background: var(--hero-base);
+  color: var(--hero-text);
+  overflow: hidden;
+}
+
+// Two radial layers, no image request. Pure CSS.
+.hero__glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+      ellipse 80% 60% at 88% 0%,
+      var(--hero-glow) 0%,
+      transparent 60%
+    ),
+    radial-gradient(ellipse 60% 50% at 0% 100%, var(--hero-glow) 0%, transparent 62%);
+}
+
+.hero__inner {
+  position: relative;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--space-gutter);
+  padding-block: clamp(3rem, 8vh, 5rem);
+  // svh, never vh: iOS Safari's dynamic toolbar makes vh taller than the
+  // visible viewport, which would hide the CTAs.
+  min-height: min(78svh, 40rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero__kicker {
+  @include eyebrow;
+  color: var(--hero-text-2);
+}
+
+.hero__name {
+  color: var(--hero-text);
+  font-size: var(--fs-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: var(--lh-tight);
+  margin-block-start: $space-4;
+}
+
+.hero__sub {
+  font-size: $fs-md;
+  line-height: 1.55;
+  color: var(--hero-text-2);
+  max-width: 46ch;
+  margin-block-start: $space-5;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-3;
+  margin-block-start: $space-6;
+}
+
+// The stat strip is the differentiator against every other developer
+// portfolio hero, so it must be visible without scrolling at a 900px
+// viewport. Each figure must trace to a specific claim — a number a reader
+// cannot verify discredits the others.
+.hero__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-5 $space-6;
+  margin: 0;
+  margin-block-start: $space-7;
+  padding-block-start: $space-5;
+  border-block-start: 1px solid var(--hero-line);
+}
+
+.hero__stat dt {
+  @include eyebrow;
+  color: var(--hero-text-2);
+  font-size: var(--fs-2xs);
+}
+
+.hero__stat dd {
+  margin: $space-1 0 0;
+  font-size: $fs-2xl;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  color: var(--hero-text);
+}
+
+.hero__stat-sub {
+  display: block;
+  font-size: $fs-xs;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--hero-text-3);
+  margin-block-start: 2px;
+}
+
+@media (max-width: 40rem) {
+  .hero__stats {
+    // Stack and collapse to a single column of figures below the labelled
+    // values, rather than a cramped 3-up row.
+    flex-direction: column;
+    gap: $space-4;
+  }
+
+  .hero__stat dd {
+    font-size: $fs-xl;
+  }
+}
